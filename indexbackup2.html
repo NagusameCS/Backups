@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IVY - Educational Resources</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/github.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.2.12/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/contrib/auto-render.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css" />
+    <style>
+        :root {
+            --accent: #E4EEE9;
+            --primary: #23352D;
+            --pillbg: #B7D2C0;
+            --pillhover: #9fc2ad;
+        }
+        
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background-color: #f8fafc;
+            color: var(--primary);
+        }
+        
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        .search-bar {
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .search-bar:focus-within {
+            box-shadow: 0 4px 15px rgba(35, 53, 45, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        .class-pill {
+            background-color: var(--pillbg);
+            transition: all 0.2s ease;
+        }
+        
+        .class-pill:hover, .class-pill.active {
+            background-color: var(--pillhover);
+            transform: translateY(-1px);
+        }
+        
+        .content-card {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: all 0.2s ease;
+        }
+        
+        .content-card:hover {
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .lesson-tag {
+            font-size: 11px;
+            letter-spacing: 0.5px;
+            background-color: rgba(74, 124, 114, 0.1);
+            color: var(--primary);
+        }
+        
+        .markdown-content img {
+            max-width: 100%;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+        
+        .markdown-content pre {
+            background-color: #f6f8fa;
+            border-radius: 6px;
+            padding: 1rem;
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+        
+        .markdown-content code {
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+            background-color: rgba(175, 184, 193, 0.2);
+            border-radius: 4px;
+            padding: 0.2em 0.4em;
+            font-size: 85%;
+        }
+        
+        .modal-overlay {
+            animation: fadeInOverlay 0.3s ease-out;
+        }
+        
+        @keyframes fadeInOverlay {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .modal-content {
+            animation: slideUp 0.4s ease-out;
+        }
+        
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .loading-spinner {
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-12">
+        <!-- Hero Section -->
+        <div class="text-center mb-12">
+            <h1 class="text-4xl font-bold mb-4" style="color: var(--primary);">IVY</h1>
+            <h2 class="text-2xl font-medium mb-4" style="color: var(--primary);">Educational Resources</h2>
+            <p class="text-gray-600 max-w-2xl mx-auto">Access lessons and study materials for your classes</p>
+        </div>
+        
+        <!-- Search Bar -->
+        <div class="max-w-3xl mx-auto mb-12 relative">
+            <div class="search-bar bg-white rounded-lg p-1 flex items-center shadow-md border border-gray-100">
+                <span class="material-symbols-outlined mx-4 text-gray-400">search</span>
+                <input 
+                    id="search-input" 
+                    type="text" 
+                    placeholder="Search lessons, topics, or subjects..." 
+                    class="flex-1 outline-none text-gray-700 placeholder-gray-400 py-3 bg-transparent"
+                >
+            </div>
+            
+            <!-- Search Suggestions -->
+            <div id="search-suggestions" class="hidden absolute left-0 right-0 mt-2 bg-white rounded-lg shadow-lg z-10 overflow-hidden border border-gray-100">
+                <div class="py-2">
+                    <h3 class="px-4 py-2 text-xs font-semibold text-gray-500">POPULAR SEARCHES</h3>
+                    <div id="suggestions-list" class="divide-y divide-gray-100"></div>
+                </div>
+            </div>
+            
+            <!-- Search Results -->
+            <div id="search-results" class="mt-4 hidden">
+                <div class="bg-white rounded-lg shadow-md p-4 fade-in border border-gray-100">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="font-medium">Search Results</h3>
+                        <button id="close-search" class="text-gray-400 hover:text-gray-600">
+                            <span class="material-symbols-outlined">close</span>
+                        </button>
+                    </div>
+                    <div id="results-list" class="space-y-3"></div>
+                    <div id="recommendations" class="mt-6 pt-6 border-t border-gray-100 hidden">
+                        <h4 class="text-sm font-medium mb-3">You might also be interested in</h4>
+                        <div id="recommendations-list" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Class Filter -->
+        <div class="mb-12">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-medium" style="color: var(--primary);">Browse Subjects</h3>
+                <div class="relative">
+                    <button id="sort-button" class="flex items-center text-sm text-gray-500 hover:text-gray-700">
+                        <span class="material-symbols-outlined mr-1 text-base">sort</span>
+                        Sort by: Newest
+                    </button>
+                    <div id="sort-options" class="hidden absolute right-0 mt-2 w-40 bg-white rounded-lg shadow-lg z-10 border border-gray-100 py-1">
+                        <div class="px-4 py-2 text-sm cursor-pointer hover:bg-gray-50 active" data-sort="newest">Newest First</div>
+                        <div class="px-4 py-2 text-sm cursor-pointer hover:bg-gray-50" data-sort="oldest">Oldest First</div>
+                        <div class="px-4 py-2 text-sm cursor-pointer hover:bg-gray-50" data-sort="duration">Duration</div>
+                        <div class="px-4 py-2 text-sm cursor-pointer hover:bg-gray-50" data-sort="topic">Topic</div>
+                    </div>
+                </div>
+            </div>
+            <div id="subject-pills" class="flex flex-wrap gap-3">
+                <!-- Subjects will be loaded dynamically -->
+                <div class="class-pill px-4 py-2 rounded-full text-sm font-medium cursor-pointer flex items-center active" data-class="all">
+                    <span class="material-symbols-outlined mr-1 text-sm">all_inclusive</span>
+                    All Subjects
+                </div>
+            </div>
+        </div>
+        
+        <!-- Content Section -->
+        <div>
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-medium" style="color: var(--primary);">Recent Lessons</h3>
+            </div>
+            
+            <div id="content-area" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Content will be dynamically loaded here -->
+            </div>
+            
+            <div id="loading-spinner" class="text-center py-12">
+                <div class="inline-block animate-spin rounded-full h-8 w-8 border-t-2 border-b-2" style="border-color: var(--primary);"></div>
+            </div>
+            
+            <div id="no-results" class="hidden text-center py-12">
+                <span class="material-symbols-outlined text-4xl text-gray-400 mb-3">search_off</span>
+                <h4 class="text-lg font-medium text-gray-600">No lessons found</h4>
+                <p class="text-gray-500 mt-1">Try adjusting your search or filter criteria</p>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Lesson Modal -->
+    <div id="lesson-modal" class="hidden fixed inset-0 z-50 overflow-y-auto">
+        <div class="modal-overlay fixed inset-0 bg-black bg-opacity-50"></div>
+        <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div class="modal-content inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-4xl sm:w-full">
+                <div class="bg-white px-6 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h3 id="lesson-title" class="text-2xl font-bold mb-1" style="color: var(--primary);"></h3>
+                            <div class="flex items-center space-x-3 mb-4">
+                                <span id="lesson-topic" class="lesson-tag px-2 py-1 rounded-full"></span>
+                                <span id="lesson-time" class="flex items-center text-sm text-gray-500">
+                                    <span class="material-symbols-outlined mr-1 text-sm">schedule</span>
+                                    <span id="time-estimate"></span> min
+                                </span>
+                                <span id="lesson-date" class="text-sm text-gray-500"></span>
+                            </div>
+                        </div>
+                        <button id="close-modal" class="text-gray-400 hover:text-gray-600">
+                            <span class="material-symbols-outlined">close</span>
+                        </button>
+                    </div>
+                    <div id="lesson-content" class="markdown-content mt-4 max-h-[70vh] overflow-y-auto pr-2">
+                        <!-- Lesson content will be loaded here -->
+                    </div>
+                </div>
+                <div class="bg-gray-50 px-6 py-3 flex justify-between items-center">
+                    <div id="lesson-nav-prev" class="text-gray-500 hover:text-gray-700 cursor-pointer flex items-center">
+                        <span class="material-symbols-outlined mr-1">chevron_left</span>
+                        Previous
+                    </div>
+                    <div id="lesson-nav-next" class="text-gray-500 hover:text-gray-700 cursor-pointer flex items-center">
+                        Next
+                        <span class="material-symbols-outlined ml-1">chevron_right</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-200 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="flex items-center mb-4 md:mb-0">
+                    <span class="text-lg font-medium" style="color: var(--primary);">IVY</span>
+                </div>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-500 hover:text-gray-700">Terms</a>
+                    <a href="#" class="text-gray-500 hover:text-gray-700">Privacy</a>
+                    <a href="#" class="text-gray-500 hover:text-gray-700">Contact</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Configuration
+        const REPO_URL = 'https://raw.githubusercontent.com/NagusameCS/IVY/main/';
+        const STRUCT_FILE = 'struct.json';
+        
+        // Data Objects
+        const SUBJECT_ICONS = {
+            "math": "calculate",
+            "physics": "science",
+            "chemistry": "test_tube",
+            "economics": "trending_up",
+            "business": "business_center",
+            "design": "design_services",
+            "biology": "biotech",
+            "computer-science": "code",
+            "all": "all_inclusive"
+        };
+        
+        // Global Variables
+        let currentFilter = 'all';
+        let currentSearchQuery = '';
+        let currentSort = 'newest';
+        let curriculumData = [];
+        let allLessons = [];
+        let currentLessonIndex = 0;
+        let currentLessonList = [];
+        let searchTimeout = null;
+        
+        // DOM Elements
+        const searchInput = document.getElementById('search-input');
+        const searchSuggestions = document.getElementById('search-suggestions');
+        const suggestionsList = document.getElementById('suggestions-list');
+        const searchResults = document.getElementById('search-results');
+        const resultsList = document.getElementById('results-list');
+        const recommendations = document.getElementById('recommendations');
+        const recommendationsList = document.getElementById('recommendations-list');
+        const closeSearch = document.getElementById('close-search');
+        const contentArea = document.getElementById('content-area');
+        const noResults = document.getElementById('no-results');
+        const loadingSpinner = document.getElementById('loading-spinner');
+        const subjectPills = document.getElementById('subject-pills');
+        const sortButton = document.getElementById('sort-button');
+        const sortOptions = document.getElementById('sort-options');
+        const lessonModal = document.getElementById('lesson-modal');
+        const lessonTitle = document.getElementById('lesson-title');
+        const lessonContent = document.getElementById('lesson-content');
+        const lessonTopic = document.getElementById('lesson-topic');
+        const timeEstimate = document.getElementById('time-estimate');
+        const lessonDate = document.getElementById('lesson-date');
+        const closeModal = document.getElementById('close-modal');
+        const lessonNavPrev = document.getElementById('lesson-nav-prev');
+        const lessonNavNext = document.getElementById('lesson-nav-next');
+        
+        // Initialize the application
+        async function initApp() {
+            showLoading();
+            try {
+                // Fetch curriculum structure
+                // Debugging: Log fetch response
+                console.log('Fetching curriculum structure from:', `${REPO_URL}${STRUCT_FILE}`);
+
+                const response = await fetch(`${REPO_URL}${STRUCT_FILE}`);
+                console.log('Fetch Response Status:', response.status);
+                console.log('Fetch Response OK:', response.ok);
+
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch curriculum: ${response.statusText}`);
+                }
+
+                const data = await response.json();
+                console.log('Fetched Curriculum Data:', data);
+                
+                // Ensure curriculumData is an array
+                curriculumData = Array.isArray(data) ? data : [data];
+                processCurriculumData();
+                loadSubjectPills();
+                loadContent();
+                hideLoading();
+            } catch (error) {
+                console.error('Error loading curriculum:', error);
+                showError();
+            }
+        }
+        
+        // Process curriculum data into a flat list of lessons
+        function processCurriculumData() {
+            allLessons = [];
+            if (!Array.isArray(curriculumData)) {
+                console.error('Curriculum data is not an array:', curriculumData);
+                return;
+            }
+            
+            curriculumData.forEach(subject => {
+                console.log('Processing Subject:', subject.subject);
+                console.log('Tooltip:', subject.tooltip);
+                console.log('Sections:', subject.sections);
+
+                subject.sections.forEach(section => {
+                    console.log('Processing Section:', section.title);
+                    console.log('Lessons in Section:', section.lessons);
+
+                    section.lessons.forEach(lesson => {
+                        const fullLesson = {
+                            ...lesson,
+                            subject: subject.subject,
+                            subjectTooltip: subject.tooltip,
+                            section: section.title,
+                            sectionPath: section.path,
+                            fullPath: `${subject.subject}/${section.path}/${lesson.file}`,
+                            timestamp: new Date()
+                        };
+                        console.log('Adding Lesson to allLessons:', fullLesson);
+                        allLessons.push(fullLesson);
+                    });
+                });
+            });
+        }
+        
+        // Load subject pills based on available subjects
+        function loadSubjectPills() {
+            const uniqueSubjects = [...new Set(curriculumData.map(item => item.subject))];
+            
+            uniqueSubjects.forEach(subject => {
+                const subjectKey = subject.toLowerCase().replace(' ', '-');
+                const pill = document.createElement('div');
+                pill.className = 'class-pill px-4 py-2 rounded-full text-sm font-medium cursor-pointer flex items-center';
+                pill.dataset.class = subjectKey;
+                
+                const iconName = SUBJECT_ICONS[subjectKey] || 'book';
+                pill.innerHTML = `
+                    <span class="material-symbols-outlined mr-1 text-sm">${iconName}</span>
+                    ${subject}
+                `;
+                
+                if (subjectKey === currentFilter) {
+                    pill.classList.add('active');
+                }
+                
+                pill.addEventListener('click', () => {
+                    setActiveClass(subjectKey);
+                    loadContent(subjectKey, currentSearchQuery);
+                });
+                
+                subjectPills.appendChild(pill);
+            });
+        }
+        
+        // Load content based on filters and search
+        function loadContent(filter = 'all', searchQuery = '') {
+            console.log('Filter:', filter, 'Search Query:', searchQuery);
+            console.log('Current Filter:', currentFilter);
+            console.log('Current Search Query:', currentSearchQuery);
+
+            contentArea.innerHTML = '';
+
+            let filteredLessons = [...allLessons];
+
+            // Apply subject filter
+            if (filter !== 'all') {
+                filteredLessons = filteredLessons.filter(lesson => 
+                    lesson.subject.toLowerCase().replace(' ', '-') === filter
+                );
+            }
+
+            // Apply search filter if there's a query
+            if (searchQuery.trim()) {
+                const query = searchQuery.toLowerCase();
+                filteredLessons = filteredLessons.filter(lesson => {
+                    return lesson.title.toLowerCase().includes(query) || 
+                           lesson.topic.toLowerCase().includes(query) ||
+                           lesson.subject.toLowerCase().includes(query) ||
+                           lesson.section.toLowerCase().includes(query);
+                });
+            }
+
+            console.log('Filtered Lessons:', filteredLessons);
+
+            // Apply sorting
+            filteredLessons = sortLessons(filteredLessons, currentSort);
+            
+            // Display content or no results message
+            if (filteredLessons.length === 0) {
+                noResults.classList.remove('hidden');
+            } else {
+                noResults.classList.add('hidden');
+                filteredLessons.slice(0, 9).forEach((lesson, index) => {
+                    const card = document.createElement('div');
+                    card.className = 'content-card bg-white rounded-lg p-5 flex flex-col h-full';
+                    
+                    const subjectKey = lesson.subject.toLowerCase().replace(' ', '-');
+                    const iconName = SUBJECT_ICONS[subjectKey] || 'book';
+                    
+                    card.innerHTML = `
+                        <div class="flex-1">
+                            <div class="flex items-start mb-4">
+                                <span class="material-symbols-outlined mr-3 text-2xl" style="color: var(--primary);">${iconName}</span>
+                                <div>
+                                    <h3 class="font-medium text-lg mb-1" style="color: var(--primary);">${lesson.title}</h3>
+                                    <p class="text-gray-600 text-sm">${lesson.section}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex justify-between items-center text-xs text-gray-500 mt-4 pt-3 border-t border-gray-100">
+                            <div class="flex items-center space-x-2">
+                                <span class="lesson-tag px-2 py-1 rounded-full">${lesson.topic}</span>
+                                <span class="text-gray-500">${lesson.subject}</span>
+                            </div>
+                            <span class="flex items-center">
+                                <span class="material-symbols-outlined mr-1 text-sm">schedule</span>
+                                ${lesson.time_estimate} min
+                            </span>
+                        </div>
+                    `;
+                    
+                    card.addEventListener('click', () => {
+                        openLessonModal(lesson, filteredLessons);
+                    });
+                    
+                    contentArea.appendChild(card);
+                });
+            }
+        }
+        
+        // Sort lessons based on current sort option
+        function sortLessons(lessons, sortBy) {
+            switch(sortBy) {
+                case 'newest':
+                    return lessons.sort((a, b) => b.timestamp - a.timestamp);
+                case 'oldest':
+                    return lessons.sort((a, b) => a.timestamp - b.timestamp);
+                case 'duration':
+                    return lessons.sort((a, b) => b.time_estimate - a.time_estimate);
+                case 'topic':
+                    return lessons.sort((a, b) => a.topic.localeCompare(b.topic));
+                default:
+                    return lessons;
+            }
+        }
+        
+        // Perform search
+        function performSearch(query) {
+            currentSearchQuery = query;
+
+            if (!query.trim()) {
+                searchResults.classList.add('hidden');
+                loadContent(currentFilter);
+                return;
+            }
+
+            const filteredResults = allLessons.filter(lesson => {
+                const searchText = lesson.title.toLowerCase() + 
+                                  lesson.section.toLowerCase() +
+                                  lesson.subject.toLowerCase() +
+                                  lesson.topic.toLowerCase();
+                return searchText.includes(query.toLowerCase());
+            });
+
+            resultsList.innerHTML = '';
+
+            if (filteredResults.length === 0) {
+                resultsList.innerHTML = '<p class="text-gray-500 py-4 text-center">No results found for "' + query + '"</p>';
+            } else {
+                filteredResults.slice(0, 5).forEach(result => {
+                    const resultItem = document.createElement('div');
+                    resultItem.className = 'search-suggestion p-2 hover:bg-gray-50 rounded-lg cursor-pointer';
+                    resultItem.innerHTML = `
+                        <div class="flex flex-col">
+                            <span class="font-medium">${result.subject} - ${result.title}</span>
+                            <span class="text-sm text-gray-500">${result.section} • ${result.topic}</span>
+                        </div>
+                    `;
+                    resultItem.addEventListener('click', () => {
+                        searchInput.value = result.title;
+                        searchResults.classList.add('hidden');
+                        loadContent(currentFilter, result.title);
+                    });
+                    resultsList.appendChild(resultItem);
+                });
+            }
+
+            searchResults.classList.remove('hidden');
+        }
+
+        function setActiveClass(className) {
+            currentFilter = className;
+            const pills = document.querySelectorAll('.class-pill');
+            pills.forEach(pill => {
+                if (pill.dataset.class === className) {
+                    pill.classList.add('active');
+                } else {
+                    pill.classList.remove('active');
+                }
+            });
+            loadContent(currentFilter); // Reload content for the selected filter
+        }
+        
+        // Initialize search suggestions
+        function initSearchSuggestions() {
+            suggestionsList.innerHTML = '';
+            
+            // Get unique lesson titles for suggestions
+            const uniqueTitles = [...new Set(allLessons.map(lesson => lesson.title))];
+            uniqueTitles.slice(0, 5).forEach(title => {
+                const suggestion = document.createElement('div');
+                suggestion.className = 'search-suggestion px-4 py-3 flex items-center cursor-pointer';
+                suggestion.innerHTML = `
+                    <span class="material-symbols-outlined mr-3 text-gray-400 text-sm">search</span>
+                    <span>${title}</span>
+                `;
+                suggestion.addEventListener('click', () => {
+                    searchInput.value = title;
+                    searchSuggestions.classList.add('hidden');
+                    performSearch(title);
+                });
+                suggestionsList.appendChild(suggestion);
+            });
+        }
+        
+        // Open lesson modal
+        async function openLessonModal(lesson, lessonList = []) {
+            showLoading();
+            currentLessonList = lessonList;
+            currentLessonIndex = lessonList.findIndex(l => l.fullPath === lesson.fullPath);
+            
+            try {
+                // Fetch lesson content
+                const response = await fetch(`${REPO_URL}${lesson.fullPath}`);
+                if (!response.ok) throw new Error('Failed to fetch lesson');
+                
+                const markdownContent = await response.text();
+                
+                // Set modal content
+                lessonTitle.textContent = lesson.title;
+                lessonTopic.textContent = lesson.topic;
+                timeEstimate.textContent = lesson.time_estimate;
+                lessonDate.textContent = lesson.timestamp.toLocaleDateString();
+                
+                // Render markdown with LaTeX support
+                renderMarkdown(markdownContent);
+                
+                // Update navigation buttons
+                updateLessonNavButtons();
+                
+                // Show modal
+                lessonModal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+                hideLoading();
+            } catch (error) {
+                console.error('Error loading lesson:', error);
+                lessonContent.innerHTML = `<p class="text-red-500">Error loading lesson content. Please try again later.</p>`;
+                hideLoading();
+            }
+        }
+        
+        // Render markdown content with LaTeX support
+        function renderMarkdown(markdown) {
+            // Process interactive elements before markdown rendering
+            const processedMarkdown = markdown.replace(/\[reveal\](.*?)\[\/reveal\]/gs, (match, content) => {
+                return `<div class="my-4">
+                    <button class="px-3 py-1 rounded-md text-sm font-medium mb-2" style="background-color: var(--primary); color: white;">
+                        Reveal Solution
+                    </button>
+                    <div class="hidden bg-gray-50 p-3 rounded-md">${content}</div>
+                </div>`;
+            });
+            
+            // Render markdown
+            lessonContent.innerHTML = marked.parse(processedMarkdown);
+            
+            // Highlight code blocks
+            document.querySelectorAll('pre code').forEach((block) => {
+                hljs.highlightElement(block);
+            });
+            
+            // Render LaTeX
+            renderMathInElement(lessonContent, {
+                delimiters: [
+                    {left: '$$', right: '$$', display: true},
+                    {left: '$', right: '$', display: false},
+                    {left: '\\(', right: '\\)', display: false},
+                    {left: '\\[', right: '\\]', display: true}
+                ],
+                throwOnError: false
+            });
+            
+            // Add event listeners to reveal buttons
+            document.querySelectorAll('button').forEach(button => {
+                if (button.textContent === 'Reveal Solution') {
+                    button.addEventListener('click', function() {
+                        const content = this.nextElementSibling;
+                        content.classList.toggle('hidden');
+                        this.textContent = content.classList.contains('hidden') ? 'Reveal Solution' : 'Hide Solution';
+                    });
+                }
+            });
+        }
+        
+        // Update lesson navigation buttons
+        function updateLessonNavButtons() {
+            lessonNavPrev.style.visibility = currentLessonIndex > 0 ? 'visible' : 'hidden';
+            lessonNavNext.style.visibility = currentLessonIndex < currentLessonList.length - 1 ? 'visible' : 'hidden';
+            
+            lessonNavPrev.onclick = () => {
+                if (currentLessonIndex > 0) {
+                    openLessonModal(currentLessonList[currentLessonIndex - 1], currentLessonList);
+                }
+            };
+            
+            lessonNavNext.onclick = () => {
+                if (currentLessonIndex < currentLessonList.length - 1) {
+                    openLessonModal(currentLessonList[currentLessonIndex + 1], currentLessonList);
+                }
+            };
+        }
+        
+        // Close lesson modal
+        function closeLessonModal() {
+            lessonModal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+        
+        // Show loading state
+        function showLoading() {
+            loadingSpinner.classList.remove('hidden');
+            contentArea.classList.add('hidden');
+        }
+        
+        // Hide loading state
+        function hideLoading() {
+            loadingSpinner.classList.add('hidden');
+            contentArea.classList.remove('hidden');
+        }
+        
+        // Show error state
+        function showError() {
+            loadingSpinner.classList.add('hidden');
+            contentArea.classList.add('hidden');
+            noResults.classList.remove('hidden');
+            noResults.innerHTML = `
+                <span class="material-symbols-outlined text-4xl text-red-400 mb-3">error</span>
+                <h4 class="text-lg font-medium text-gray-600">Failed to load content</h4>
+                <p class="text-gray-500 mt-1">Please check your connection and try again</p>
+                <button id="retry-button" class="mt-4 px-4 py-2 rounded-md text-white font-medium" style="background-color: var(--primary);">
+                    Retry
+                </button>
+            `;
+            
+            document.getElementById('retry-button').addEventListener('click', initApp);
+        }
+        
+        // Event Listeners
+        searchInput.addEventListener('focus', () => {
+            if (searchInput.value.trim() === '' && allLessons.length > 0) {
+                initSearchSuggestions();
+                searchSuggestions.classList.remove('hidden');
+            }
+        });
+        
+        searchInput.addEventListener('input', () => {
+            // Clear previous timeout
+            if (searchTimeout) {
+                clearTimeout(searchTimeout);
+            }
+
+            // Update search results immediately when input is cleared
+            if (searchInput.value.trim() === '') {
+                searchSuggestions.classList.add('hidden');
+                searchResults.classList.add('hidden');
+                loadContent(currentFilter); // Reload content for the current filter
+                return;
+            }
+
+            // Hide suggestions when typing
+            searchSuggestions.classList.add('hidden');
+
+            // Set new timeout for search
+            searchTimeout = setTimeout(() => {
+                performSearch(searchInput.value);
+            }, 300);
+        });
+        
+        searchInput.addEventListener('keyup', (e) => {
+            if (e.key === 'Enter') {
+                searchSuggestions.classList.add('hidden');
+                performSearch(searchInput.value);
+            }
+        });
+        
+        closeSearch.addEventListener('click', () => {
+            searchResults.classList.add('hidden');
+            searchInput.value = '';
+            loadContent(currentFilter);
+        });
+        
+        document.addEventListener('click', (e) => {
+            if (!searchInput.contains(e.target) && !searchSuggestions.contains(e.target)) {
+                searchSuggestions.classList.add('hidden');
+            }
+            
+            if (!sortButton.contains(e.target) && !sortOptions.contains(e.target)) {
+                sortOptions.classList.add('hidden');
+            }
+        });
+        
+        // Sort options
+        sortButton.addEventListener('click', () => {
+            sortOptions.classList.toggle('hidden');
+        });
+        
+        document.querySelectorAll('#sort-options > div').forEach(option => {
+            option.addEventListener('click', () => {
+                currentSort = option.dataset.sort;
+                sortButton.innerHTML = `
+                    <span class="material-symbols-outlined mr-1 text-base">sort</span>
+                    Sort by: ${option.textContent}
+                `;
+                sortOptions.classList.add('hidden');
+                loadContent(currentFilter, currentSearchQuery);
+            });
+        });
+        
+        // Modal close
+        closeModal.addEventListener('click', closeLessonModal);
+        document.querySelector('.modal-overlay').addEventListener('click', closeLessonModal);
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', initApp);
+    </script>
+</body>
+</html>
