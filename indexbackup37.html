@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1396,9 +1397,6 @@ subjectPills.insertBefore(topicsDropdown, subjectPills.children[1]);
 const topicsButton = topicsDropdown.querySelector('button');
 const topicsContent = topicsDropdown.querySelector('div');
 
-// Ensure the dropdown starts toggled closed
-topicsContent.classList.add('hidden');
-
 // Toggle dropdown visibility
 topicsButton.addEventListener('click', () => {
     topicsContent.classList.toggle('hidden');
@@ -1407,67 +1405,62 @@ topicsButton.addEventListener('click', () => {
 // Populate and enable the dropdown
 function updateTopicsDropdown() {
     const activeSubject = currentFilter !== 'all' ? currentFilter : null;
-    console.log('Active Subject:', activeSubject);
 
     if (activeSubject) {
         topicsDropdown.classList.remove('opacity-50', 'pointer-events-none');
         topicsContent.innerHTML = '';
 
-        const subjectData = curriculumData.find(item =>
+        const subjectData = curriculumData.find(item => 
             item.subject.toLowerCase().replace(/\s+/g, '-') === activeSubject
         );
-        console.log('Subject Data:', subjectData);
 
         if (subjectData) {
             topicsContent.classList.remove('hidden'); // Show when populated
 
             subjectData.sections.forEach(section => {
-                console.log('Section:', section);
                 if (activeSubject === 'math') {
-                    // Ensure subsections exist and iterate over them
-                    if (section.subsections) {
-                        section.subsections.forEach(subsection => {
-                            console.log('Subsection:', subsection);
-                            const optionElement = document.createElement('div');
-                            optionElement.className = 'px-4 py-2 text-sm cursor-pointer hover:bg-gray-50';
-                            optionElement.textContent = subsection.title;
+                    section.subsections.forEach(subsection => {
+                        const option = document.createElement('div');
+                        option.className = 'px-4 py-2 text-sm cursor-pointer hover:bg-gray-50';
+                        option.textContent = subsection.title;
 
-                            optionElement.addEventListener('click', () => {
-                                console.log('Clicked Subsection:', subsection.path);
-                                setActiveClass(subsection.path);
-                                loadContent(subsection.path, currentSearchQuery);
-                                topicsContent.classList.add('hidden');
-                            });
-
-                            topicsContent.appendChild(optionElement);
+                        option.addEventListener('click', () => {
+                            setActiveClass(subsection.path);
+                            loadContent(subsection.path, currentSearchQuery);
+                            topicsContent.classList.add('hidden');
                         });
-                    } else {
-                        console.warn('No subsections found for section:', section);
-                    }
-                } else {
-                    const optionElement = document.createElement('div');
-                    optionElement.className = 'px-4 py-2 text-sm cursor-pointer hover:bg-gray-50';
-                    optionElement.textContent = section.title;
 
-                    optionElement.addEventListener('click', () => {
-                        console.log('Clicked Section:', section.path);
+                        topicsContent.appendChild(option);
+                    });
+                } else {
+                    const option = document.createElement('div');
+                    option.className = 'px-4 py-2 text-sm cursor-pointer hover:bg-gray-50';
+                    option.textContent = section.title;
+
+                    option.addEventListener('click', () => {
                         setActiveClass(section.path);
                         loadContent(section.path, currentSearchQuery);
                         topicsContent.classList.add('hidden');
                     });
 
-                    topicsContent.appendChild(optionElement);
+                    topicsContent.appendChild(option);
                 }
             });
         }
     } else {
         topicsDropdown.classList.add('opacity-50', 'pointer-events-none');
+        topicsContent.classList.add('hidden');
     }
 }
 
-// Ensure dropdown is closed on page load
-document.addEventListener('DOMContentLoaded', () => {
-    topicsContent.classList.add('hidden');
+// Update on search input
+searchInput.addEventListener('input', updateTopicsDropdown);
+
+// Update on subject pill click
+subjectPills.addEventListener('click', (event) => {
+    if (event.target.closest('.class-pill')) {
+        updateTopicsDropdown();
+    }
 });
         }
         
@@ -1857,7 +1850,6 @@ document.addEventListener('DOMContentLoaded', () => {
         // Set active class for subject pills and load content
         function setActiveClass(className) {
             currentFilter = className;
-
             const pills = document.querySelectorAll('.class-pill');
             pills.forEach(pill => {
                 if (pill.dataset.class === className) {
