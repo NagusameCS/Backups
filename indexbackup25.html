@@ -1,0 +1,2119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IVYSTUDY</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/github.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.2.12/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/contrib/auto-render.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/markdown-it/dist/markdown-it.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/markdown-it-emoji/dist/markdown-it-emoji.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/markdown-it-task-lists/dist/markdown-it-task-lists.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/markdown-it-container/dist/markdown-it-container.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/markdown-it-mark/dist/markdown-it-mark.min.js"></script>
+    <style>
+
+        :root {
+            --primary: #1a202c; 
+        }
+
+        .primary-text {
+            color: var(--primary);
+        }
+
+        .primary-border {
+            border-color: var(--primary);
+        }
+
+        .spinner {
+            border-top-color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        :root {
+            --accent: #E4EEE9;
+            --pillbg: #B7D2C0;
+            --pillhover: #9fc2ad;
+        }
+        
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background-color: #f8fafc;
+            color: var(--primary);
+        }
+        
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        .search-bar {
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .search-bar:focus-within {
+            box-shadow: 0 4px 15px rgba(35, 53, 45, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        .class-pill {
+            background-color: var(--pillbg);
+            transition: all 0.2s ease;
+        }
+        
+        .class-pill:hover, .class-pill.active {
+            background-color: var(--pillhover);
+            transform: translateY(-1px);
+        }
+        
+        .content-card {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: all 0.2s ease;
+        }
+        
+        .content-card:hover {
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .lesson-tag {
+            font-size: 11px;
+            letter-spacing: 0.5px;
+            background-color: rgba(74, 124, 114, 0.1);
+            color: var(--primary);
+        }
+        
+        .markdown-content img {
+            max-width: 100%;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+        
+        .markdown-content pre {
+            background-color: #f6f8fa;
+            border-radius: 6px;
+            padding: 1rem;
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+        
+        .markdown-content code {
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+            background-color: rgba(175, 184, 193, 0.2);
+            border-radius: 4px;
+            padding: 0.2em 0.4em;
+            font-size: 85%;
+        }
+        
+        .modal-overlay {
+            animation: fadeInOverlay 0.3s ease-out;
+        }
+        
+        @keyframes fadeInOverlay {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .modal-content {
+            animation: slideUp 0.4s ease-out;
+        }
+        
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .loading-spinner {
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Enhanced Markdown Styling */
+        .markdown-content h1 {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 0.5rem;
+        }
+
+        .markdown-content h2 {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: var(--primary);
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .markdown-content h3 {
+            font-size: 1rem;
+            font-weight: bold;
+            color: var(--primary);
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .markdown-content p {
+            line-height: 1;
+            margin-bottom: 1rem;
+            color: #2d3748;
+        }
+
+        .markdown-content blockquote {
+            border-left: 4px solid #39a95d;
+            background-color: rgba(168, 203, 167, 0.391); /* Updated from blue to B7D2C0 */
+            padding: 1rem;
+            margin: 1rem 0;
+            font-style: italic;
+            color: #2c8247;
+        }
+
+        .markdown-content ul {
+            list-style-type: disc;
+            margin-left: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .markdown-content ol {
+            list-style-type: decimal;
+            margin-left: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .markdown-content pre {
+            background-color: #f7fcf8;
+            border: 1px solid #e2f0e6;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            overflow-x: auto;
+            margin-bottom: 1.5rem;
+        }
+
+        .markdown-content code {
+            background-color: #edf2f7;
+            padding: 0.2rem 0.4rem;
+            border-radius: 0.25rem;
+            font-family: monospace;
+            color: #2d3748;
+        }
+
+        .markdown-content hr {
+            border: 0;
+            height: 1px;
+            background: #e2e8f0;
+            margin: 2rem 0;
+        }
+
+        .markdown-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1.5rem;
+        }
+
+        .markdown-content table th,
+        .markdown-content table td {
+            border: 1px solid #e2e8f0;
+            padding: 0.75rem;
+            text-align: left;
+        }
+
+        .markdown-content table th {
+            background-color: #f7fafc;
+            font-weight: bold;
+        }
+
+        .markdown-content table tr:nth-child(even) {
+            background-color: #f7fafc;
+        }
+
+        .markdown-content a {
+            color: var(--primary);
+            text-decoration: underline;
+            transition: color 0.3s;
+        }
+
+        .markdown-content a:hover {
+            color: #2bb053;
+        }
+
+        .toc a {
+            color: #2d4838;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .toc a:hover {
+            color: var(--primary);
+        }
+
+        /* Dark Mode Styles */
+        body.dark-mode {
+            background-color: #181818; /* Neutral dark gray background */
+            color: #f0f0f0; /* Bright text for readability */
+        }
+
+        body.dark-mode .content-card {
+            background-color: #242424; /* Slightly lighter dark gray */
+            color: #f0f0f0; /* Bright text */
+            border: 1px solid #3a3a3a; /* Subtle border */
+        }
+
+        body.dark-mode .class-pill {
+            background-color: #3a3a3a; /* Neutral dark gray */
+            color: #f0f0f0; /* Bright text */
+        }
+
+        body.dark-mode .class-pill:hover {
+            background-color: #4caf50; /* Bright green hover */
+            color: #181818; /* Contrast for dark mode */
+        }
+
+        body.dark-mode .class-pill:hover .material-symbols-outlined {
+            color: #181818 !important; /* Match the text color on hover */
+        }
+
+        body.dark-mode .material-symbols-outlined {
+            color: #4caf50; /* Bright green accent color */
+        }
+
+        body.dark-mode .search-bar {
+            background-color: #242424; /* Neutral dark gray */
+            border-color: #3a3a3a; /* Subtle border */
+            color: #f0f0f0; /* Bright text */
+        }
+
+        body.dark-mode .search-bar input {
+            color: #f0f0f0; /* Bright text */
+            background-color: transparent;
+        }
+
+        body.dark-mode h1, body.dark-mode h2, body.dark-mode h3 {
+            color: #f8f8f2; /* Eggshell white for titles */
+        }
+
+        body.dark-mode h4, body.dark-mode h5, body.dark-mode h6 {
+            color: #f8f8f2; /* Eggshell white for subtitles */
+        }
+
+        body.dark-mode p, body.dark-mode span, body.dark-mode li {
+            color: #f8f8f2; /* Eggshell white for normal text */
+        }
+
+        body.dark-mode .search-bar .material-symbols-outlined {
+            color: #4caf50; /* Bright green accent color */
+        }
+
+        body.dark-mode #search-suggestions {
+            background-color: #242424; /* Neutral dark gray */
+            border-color: #3a3a3a; /* Subtle border */
+            color: #f0f0f0; /* Bright text */
+        }
+
+        body.dark-mode .markdown-content {
+            background-color: #242424; /* Neutral dark gray */
+            color: #f0f0f0; /* Bright text */
+        }
+
+        body.dark-mode .markdown-content a {
+            color: #4caf50; /* Bright green links */
+        }
+
+        body.dark-mode .markdown-content blockquote {
+            background-color: rgba(76, 175, 80, 0.1); /* Subtle greenish background */
+            border-left: 4px solid #4caf50; /* Bright green border */
+            color: #e0f5e0; /* Light greenish text */
+        }
+
+        body.dark-mode .dark-mode-toggle {
+            background-color: #4caf50; /* Bright green background */
+            color: #181818; /* Contrast for dark mode */
+        }
+
+        body.dark-mode .dark-mode-toggle:hover {
+            background-color: #3a3a3a; /* Neutral dark gray hover */
+        }
+
+        body.dark-mode .lesson-icon {
+            color: #4caf50; /* Bright green for lesson icons */
+        }
+
+        body.dark-mode .modal-content {
+            background-color: #242424; /* Neutral dark gray for modal content */
+            color: #f0f0f0; /* Bright text for readability */
+        }
+
+        body.dark-mode .modal-overlay {
+            background-color: rgba(0, 0, 0, 0.8); /* Darker overlay for modals */
+        }
+
+        body.dark-mode #static-modal-content {
+            background-color: #1e1e1e; /* Darker gray for static modal content */
+            color: #f8f8f2; /* Eggshell white for text */
+        }
+
+        /* Ensure all colors have dark mode counterparts */
+        body.dark-mode .primary-text {
+            color: #f8f8f2; /* Eggshell white for primary text */
+        }
+
+        body.dark-mode .primary-border {
+            border-color: #3a3a3a; /* Subtle border for primary elements */
+        }
+
+        body.dark-mode .spinner {
+            border-top-color: #4caf50; /* Bright green spinner */
+            border-bottom-color: #4caf50; /* Bright green spinner */
+        }
+
+        body.dark-mode .lesson-tag {
+            background-color: rgba(76, 175, 80, 0.1); /* Subtle greenish background */
+            color: #4caf50; /* Bright green text */
+        }
+
+        body.dark-mode .markdown-content pre {
+            background-color: #1e1e1e; /* Darker gray for code blocks */
+            border: 1px solid #3a3a3a; /* Subtle border */
+            color: #f8f8f2; /* Eggshell white for code text */
+        }
+
+        body.dark-mode .markdown-content code {
+            background-color: rgba(76, 175, 80, 0.1); /* Subtle greenish background */
+            color: #4caf50; /* Bright green text */
+        }
+
+        body.dark-mode .markdown-content hr {
+            background: #3a3a3a; /* Subtle border for horizontal rules */
+        }
+
+        body.dark-mode .markdown-content table th {
+            background-color: #242424; /* Neutral dark gray for table headers */
+            color: #f0f0f0; /* Bright text */
+        }
+
+        body.dark-mode .markdown-content table td {
+            background-color: #1e1e1e; /* Darker gray for table cells */
+            color: #f0f0f0; /* Bright text */
+        }
+
+        body.dark-mode .markdown-content table tr:nth-child(even) {
+            background-color: #242424; /* Neutral dark gray for even rows */
+        }
+
+        /* Dark mode styles for modal and popups */
+        body.dark-mode .modal-content {
+            background-color: #242424; /* Neutral dark gray for modal content */
+            color: #f0f0f0; /* Bright text for readability */
+        }
+
+        body.dark-mode .modal-overlay {
+            background-color: rgba(0, 0, 0, 0.8); /* Darker overlay for modals */
+        }
+
+        body.dark-mode #static-modal-content {
+            background-color: #1e1e1e; /* Darker gray for static modal content */
+            color: #f8f8f2; /* Eggshell white for text */
+        }
+
+        body.dark-mode .search-bar {
+            background-color: #242424; /* Neutral dark gray */
+            border-color: #3a3a3a; /* Subtle border */
+            color: #f0f0f0; /* Bright text */
+        }
+
+        /* Consistent color for Google icons in dark mode */
+        body.dark-mode .material-symbols-outlined {
+            color: #4caf50; /* Bright green for all Google icons */
+        }
+
+        /* Dark mode styles for resource title cards */
+        body.dark-mode .content-card {
+            background-color: #242424; /* Neutral dark gray for cards */
+            color: #f0f0f0; /* Bright text */
+            border: 1px solid #3a3a3a; /* Subtle border */
+        }
+
+        body.dark-mode .content-card:hover {
+            background-color: #3a3a3a; /* Slightly lighter gray on hover */
+        }
+
+        /* Global dark mode for bg-white */
+        body.dark-mode .bg-white {
+            background-color: #242424 !important; /* Neutral dark gray */
+            color: #f0f0f0 !important; /* Bright text */
+        }
+
+        /* Dark mode for elements using var(--primary) */
+        body.dark-mode [style*="--primary"] {
+            color: #4caf50 !important; /* Bright green for primary elements */
+        }
+
+        /* Dark mode for navigation bar in modal */
+        body.dark-mode .bg-gray-50 {
+            background-color: #242424 !important; /* Neutral dark gray */
+            color: #f0f0f0 !important; /* Bright text */
+        }
+
+        body.dark-mode .text-gray-500 {
+            color: #b0b0b0 !important; /* Lighter gray for text */
+        }
+
+        body.dark-mode .text-gray-500:hover {
+            color: #f0f0f0 !important; /* Bright text on hover */
+        }
+
+        /* Adjust hover highlight color to 90% transparency */
+        .hover\:bg-gray-50:hover {
+            background-color: rgba(0, 0, 0, 0.1) !important; /* 90% transparent */
+        }
+
+        body.dark-mode .hover\:bg-gray-50:hover {
+            background-color: rgba(255, 255, 255, 0.1) !important; /* 90% transparent for dark mode */
+        }
+
+        /* Dark mode hover highlight for class-pill elements */
+        body.dark-mode .class-pill:hover {
+            background-color: rgba(255, 255, 255, 0.81) !important; /* 90% transparent for dark mode */
+        }
+
+        /* Light mode hover highlight for class-pill elements */
+        .class-pill:hover {
+            background-color: rgba(0, 0, 0, 0.1) !important; /* 90% transparent for light mode */
+        }
+
+        #dark-mode-toggle {
+            width: 56px; /* Set width and height to equal values */
+            height: 56px;
+            border-radius: 50%; /* Make the button perfectly circular */
+        }
+
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200%; }
+            100% { background-position: 200%; }
+        }
+
+        .typed-effect {
+            display: inline-block;
+            overflow: hidden;
+            white-space: nowrap;
+            border-right: 2px solid var(--primary);
+            animation: typing 3s steps(30, end), blink 0.5s step-end infinite alternate;
+        }
+
+        .shimmer-effect {
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.1));
+            background-size: 200% 100%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shimmer 2s infinite;
+        }
+
+        /* Adjusted Loading Screen */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #ffffff; /* Light background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .loading-content {
+            text-align: center;
+            position: relative;
+        }
+
+        .loading-logo {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #1a202c; /* Primary text color */
+            margin-bottom: 1rem;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .loading-box {
+            width: 100px;
+            height: 100px;
+            position: relative;
+        }
+
+        .box-border {
+            position: absolute;
+            width: 0;
+            height: 0;
+            border: 2px solid #1a202c; /* Primary color */
+            animation: draw-box 0.8s cubic-bezier(0.4, 0, 1, 1) forwards;
+        }
+
+        @keyframes draw-box {
+            0% {
+                width: 0;
+                height: 0;
+                border-radius: 0;
+                box-shadow: none;
+            }
+
+            20% {
+                width: 100%;
+                height: 2px;
+            }
+
+            40% {
+                width: 100%;
+                height: 100%;
+            }
+
+            60% {
+                transform: scale(1.02);
+                border-radius: 12px;
+                box-shadow: 0 0 12px rgba(0, 0, 0, 0.2);
+            }
+
+            80% {
+                transform: scale(0.98);
+                border-radius: 6px;
+                box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
+            }
+
+            100% {
+                width: 100%;
+                height: 100%;
+                transform: scale(1);
+                border-radius: 0;
+                box-shadow: none;
+            }
+        }
+
+        /* Dark Mode Loading Screen */
+        body.dark-mode .loading-screen {
+            background-color: #181818; /* Dark background */
+        }
+
+        body.dark-mode .loading-logo {
+            color: #f0f0f0; /* Bright text */
+        }
+
+        body.dark-mode .box-border {
+            border-color: #4caf50; /* Bright green */
+        }
+
+        /* Fade-out animation for the loading screen */
+        .fade-out {
+            animation: fadeOut 0.5s ease-out forwards;
+        }
+
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+            }
+            to {
+                opacity: 0;
+                visibility: hidden;
+            }
+        }
+
+        /* Fade-in animation for the main content */
+        .fade-in {
+            animation: fadeIn 0.5s ease-in forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .cc-icon {
+            max-width: 1em;
+            max-height: 1em;
+            margin-left: 0.2em;
+        }
+    </style>
+
+    <meta property="og:title" content="Ivy Study - Learning made free">
+    <meta property="og:description" content="Your go-to study platform.">
+    <meta property="og:image" content="https://www.ivystudy.org/SocialBanner.png">
+    <meta property="og:url" content="https://www.ivystudy.org/">
+    <meta property="og:type" content="website">
+
+</head>
+<body class="min-h-screen">
+    <!-- Loading Screen -->
+    <div class="loading-screen">
+        <div class="loading-content">
+            <div class="loading-logo">IVY</div>
+            <div class="loading-box">
+                <div class="box-border"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-12">
+        <!-- Hero Section -->
+        <div class="text-center mb-12">
+            <h1 class="text-4xl font-bold mb-4 primary-text">IVYSTUDY.org</h1>
+            <p class="text-gray-600 max-w-2xl mx-auto">Access lessons and study materials for your classes.</p>
+        </div>
+        
+        <!-- Search Bar -->
+        <div class="max-w-3xl mx-auto mb-12 relative">
+            <div class="search-bar bg-white rounded-lg p-1 flex items-center shadow-md border border-gray-100">
+                <span class="material-symbols-outlined mx-4 text-gray-400">search</span>
+                <input 
+                    id="search-input" 
+                    type="text" 
+                    placeholder="Search lessons, topics, or subjects..." 
+                    class="flex-1 outline-none text-gray-700 placeholder-gray-400 py-3 bg-transparent"
+                >
+            </div>
+            
+            <!-- Search Suggestions -->
+            <div id="search-suggestions" class="hidden absolute left-0 right-0 mt-2 bg-white rounded-lg shadow-lg z-10 overflow-hidden border border-gray-100">
+                <div class="py-2">
+                    <h3 class="px-4 py-2 text-xs font-semibold text-gray-500">POPULAR SEARCHES</h3>
+                    <div id="suggestions-list" class="divide-y divide-gray-100"></div>
+                </div>
+            </div>
+            
+            <!-- Search Results -->
+            <div id="search-results" class="mt-4 hidden">
+                <div class="bg-white rounded-lg shadow-md p-4 fade-in border border-gray-100">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="font-medium">Search Results</h3>
+                    </div>
+                    <div id="results-list" class="space-y-3"></div>
+                    <div id="recommendations" class="mt-6 pt-6 border-t border-gray-100 hidden">
+                        <h4 class="text-sm font-medium mb-3">You might also be interested in</h4>
+                        <div id="recommendations-list" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Class Filter -->
+        <div class="mb-12">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-medium primary-text">Filter</h3>
+                <div class="relative">
+                    <button id="sort-button" class="flex items-center text-sm text-gray-500 hover:text-gray-700">
+                        <span class="material-symbols-outlined mr-1 text-base">sort</span>
+                        Sort by: Newest
+                    </button>
+                    <div id="sort-options" class="hidden absolute right-0 mt-2 w-40 bg-white rounded-lg shadow-lg z-10 border border-gray-100 py-1">
+                        <div class="px-4 py-2 text-sm cursor-pointer hover:bg-gray-50 active" data-sort="newest">Newest First</div>
+                        <div class="px-4 py-2 text-sm cursor-pointer hover:bg-gray-50" data-sort="oldest">Oldest First</div>
+                        <div class="px-4 py-2 text-sm cursor-pointer hover:bg-gray-50" data-sort="duration">Duration</div>
+                        <div class="px-4 py-2 text-sm cursor-pointer hover:bg-gray-50" data-sort="topic">Topic</div>
+                    </div>
+                </div>
+            </div>
+            <div id="subject-pills" class="flex flex-wrap gap-3">
+                <!-- Subjects will be loaded dynamically -->
+            </div>
+        </div>
+        
+        <!-- Content Section -->
+        <div>
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-medium primary-text">Resources</h3>
+            </div>
+            
+            <div id="content-area" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Content will be dynamically loaded here -->
+            </div>
+            
+            <div id="loading-spinner" class="text-center py-12">
+                <div class="inline-block animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 spinner"></div>
+            </div>
+            
+            <div id="no-results" class="hidden text-center py-12">
+                <span class="material-symbols-outlined text-4xl text-gray-400 mb-3">search_off</span>
+                <h4 class="text-lg font-medium text-gray-600">No resources found</h4>
+                <p class="text-gray-500 mt-1">Try adjusting your search or filter criteria</p>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Lesson Modal -->
+    <div id="lesson-modal" class="hidden fixed inset-0 z-50 overflow-y-auto">
+        <div class="modal-overlay fixed inset-0 bg-black bg-opacity-50"></div>
+        <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div class="modal-content inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-4xl sm:w-full">
+                <div class="bg-white px-6 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h3 id="lesson-title" class="text-2xl font-bold mb-1 primary-text"></h3>
+                            <div class="flex items-center space-x-3 mb-4">
+                                <span id="lesson-topic" class="lesson-tag px-2 py-1 rounded-full"></span>
+                                <span id="lesson-time" class="flex items-center text-sm text-gray-500">
+                                    <span class="material-symbols-outlined mr-1 text-sm">schedule</span>
+                                    <span id="time-estimate"></span> min
+                                </span>
+                                <span id="lesson-date" class="text-sm text-gray-500"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="lesson-content" class="markdown-content mt-4 max-h-[70vh] overflow-y-auto pr-2">
+                        <!-- Lesson content will be loaded here -->
+                    </div>
+                </div>
+                <div class="bg-gray-50 px-6 py-3 flex justify-between items-center">
+                    <div id="lesson-nav-prev" class="text-gray-500 hover:text-gray-700 cursor-pointer flex items-center">
+
+
+                    </div>
+                    <div id="lesson-nav-next" class="text-gray-500 hover:text-gray-700 cursor-pointer flex items-center">
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Static Modal for Terms, Privacy, Contact -->
+    <div id="static-modal" class="hidden fixed inset-0 z-50 overflow-y-auto">
+        <div class="modal-overlay fixed inset-0 bg-black bg-opacity-50"></div>
+        <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-2xl sm:w-full">
+                <div class="bg-white px-6 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h3 id="static-modal-title" class="text-2xl font-bold mb-1 primary-text"></h3>
+                        </div>
+                        <button id="static-modal-close" class="text-gray-400 hover:text-gray-600">
+                            <span class="material-symbols-outlined">close</span>
+                        </button>
+                    </div>
+                    <div id="static-modal-content" class="markdown-content mt-4 max-h-[70vh] overflow-y-auto pr-2">
+                        <!-- Static content will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-200 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="flex items-center mb-4 md:mb-0">
+                    <span class="text-lg font-medium primary-text">IVY</span>
+                </div>
+
+                <div class="text-center mt">
+                    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="text-gray-500 hover:text-gray-700">IVYSTUDY Content © 2025 is licensed under CC BY-NC-SA 4.0</a>
+                </div>
+
+                <div class="flex space-x-6">
+                    <a href="#terms" class="text-gray-500 hover:text-gray-700">Terms</a>
+                    <a href="#privacy" class="text-gray-500 hover:text-gray-700">Privacy</a>
+                    <a href="#contact" class="text-gray-500 hover:text-gray-700">Contact</a>
+                    <a href="https://github.com/NagusameCS/IVY/tree/main" target="_blank" rel="noopener noreferrer"
+                        class="flex items-center gap-1 text-gray-500 hover:text-gray-700">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path fill-rule="evenodd" clip-rule="evenodd"
+                            d="M12 0C5.37 0 0 5.373 0 12c0 5.303 
+                            3.438 9.8 8.205 11.387.6.113.82-.258.82-.577
+                            0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61
+                            -.546-1.387-1.333-1.757-1.333-1.757-1.09-.745.083-.729.083-.729
+                            1.205.084 1.84 1.236 1.84 1.236 1.07 1.835 2.807 1.305 3.492.998
+                            .108-.775.418-1.305.76-1.605-2.665-.3-5.466-1.335-5.466-5.933
+                            0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176
+                            0 0 1.005-.322 3.3 1.23a11.52 11.52 0 013.003-.403
+                            c1.02.005 2.045.137 3.003.403 2.28-1.552 3.285-1.23
+                            3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91
+                            1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.21
+                            0 1.595-.015 2.88-.015 3.27 0 .315.21.69.825.57C20.565 
+                            21.795 24 17.295 24 12c0-6.627-5.373-12-12-12z" />
+                        </svg>GitHub
+                        
+                    </a>
+
+
+                </div>
+            </div>
+
+        </div>
+    </footer>
+
+    <!-- Dark Mode Toggle -->
+    <button id="dark-mode-toggle" class="fixed bottom-4 right-4 p-3 rounded-full bg-white shadow-md z-50">
+        <span class="material-symbols-outlined">dark_mode</span>
+    </button>
+
+    <script>
+        // Configuration
+        const REPO_URL = 'https://raw.githubusercontent.com/NagusameCS/IVY/main/';
+        const STRUCT_FILE = 'struct.json';
+        
+        // Data Objects
+        const SUBJECT_ICONS = {
+            "math": "calculate",
+            "math ai": "calculate",
+            "math aa": "calculate",
+            "physics": "science",
+            "chemistry": "test_tube",
+            "economics": "finance_mode",
+            "business": "business_center",
+            "design": "design_services",
+            "biology": "biotech",
+            "computer-science": "code",
+            "all": "all_inclusive"
+        };
+        
+        // Global Variables
+        let currentFilter = 'all';
+        let currentSearchQuery = '';
+        let currentSort = 'newest';
+        let curriculumData = [];
+        let allLessons = [];
+        let currentLessonIndex = 0;
+        let currentLessonList = [];
+        let searchTimeout = null;
+        
+        // DOM Elements
+        const searchInput = document.getElementById('search-input');
+        const searchSuggestions = document.getElementById('search-suggestions');
+        const suggestionsList = document.getElementById('suggestions-list');
+        const searchResults = document.getElementById('search-results');
+        const resultsList = document.getElementById('results-list');
+        const recommendations = document.getElementById('recommendations');
+        const recommendationsList = document.getElementById('recommendations-list');
+        const closeSearch = document.getElementById('close-search');
+        const contentArea = document.getElementById('content-area');
+        const noResults = document.getElementById('no-results');
+        const loadingSpinner = document.getElementById('loading-spinner');
+        const subjectPills = document.getElementById('subject-pills');
+        const sortButton = document.getElementById('sort-button');
+        const sortOptions = document.getElementById('sort-options');
+        const lessonModal = document.getElementById('lesson-modal');
+        const lessonTitle = document.getElementById('lesson-title');
+        const lessonContent = document.getElementById('lesson-content');
+        const lessonTopic = document.getElementById('lesson-topic');
+        const timeEstimate = document.getElementById('time-estimate');
+        const lessonDate = document.getElementById('lesson-date');
+        const closeModal = document.getElementById('close-modal');
+        const lessonNavPrev = document.getElementById('lesson-nav-prev');
+        const lessonNavNext = document.getElementById('lesson-nav-next');
+        const darkModeToggle = document.getElementById('dark-mode-toggle');
+        
+        // Set favicon dynamically from GitHub repository
+        const faviconLink = document.createElement('link');
+        faviconLink.rel = 'icon';
+        faviconLink.href = `${REPO_URL}favicon.png`;
+        document.head.appendChild(faviconLink);
+        
+        // Initialize the application
+        async function initApp() {
+            showLoading();
+            try {
+                // Fetch curriculum structure
+                // Debugging: Log fetch response
+                console.log('Fetching curriculum structure from:', `${REPO_URL}${STRUCT_FILE}`);
+
+                const response = await fetch(`${REPO_URL}${STRUCT_FILE}`);
+                console.log('Fetch Response Status:', response.status);
+                console.log('Fetch Response OK:', response.ok);
+
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch curriculum: ${response.statusText}`);
+                }
+
+                const data = await response.json();
+                console.log('Fetched Curriculum Data:', data);
+                
+                // Ensure curriculumData is an array
+                curriculumData = Array.isArray(data) ? data : [data];
+                processCurriculumData();
+                loadSubjectPills();
+                loadTopicFilters(currentFilter); // Load topic filters initially
+                loadContent();
+                hideLoading();
+            } catch (error) {
+                console.error('Error loading curriculum:', error);
+                showError();
+            }
+        }
+        
+        // Process curriculum data into a flat list of lessons
+        // Update: Ensure unique objects with full integration of categories, tags, and levels
+        function processCurriculumData() {
+            allLessons = [];
+            if (!Array.isArray(curriculumData)) {
+                console.error('Curriculum data is not an array:', curriculumData);
+                return;
+            }
+
+            curriculumData.forEach(subject => {
+                console.log('Processing Subject:', subject.subject);
+                subject.sections.forEach(section => {
+                    if (section.subsections) {
+                        section.subsections.forEach(subsection => {
+                            subsection.lessons.forEach(lesson => {
+                                const fullLesson = {
+                                    ...lesson,
+                                    subject: subject.subject,
+                                    subjectTooltip: subject.tooltip,
+                                    section: section.title,
+                                    subsection: subsection.title,
+                                    sectionPath: section.path,
+                                    fullPath: `${subject.subject}/${section.path}/${subsection.path}/${lesson.file}`,
+                                    timestamp: new Date(lesson.timestamp)
+                                };
+                                console.log('Adding Lesson:', fullLesson);
+                                allLessons.push(fullLesson);
+                            });
+                        });
+                    } else {
+                        section.lessons.forEach(lesson => {
+                            const fullLesson = {
+                                ...lesson,
+                                subject: subject.subject,
+                                subjectTooltip: subject.tooltip,
+                                section: section.title,
+                                sectionPath: section.path,
+                                fullPath: `${subject.subject}/${section.path}/${lesson.file}`,
+                                timestamp: new Date(lesson.timestamp)
+                            };
+                            console.log('Adding Lesson:', fullLesson);
+                            allLessons.push(fullLesson);
+                        });
+                    }
+                });
+            });
+        }
+        
+        // Load subject pills based on available subjects
+        function loadSubjectPills() {
+            subjectPills.innerHTML = '';
+
+            // Add 'All Subjects' button
+            const allSubjectsButton = document.createElement('div');
+            allSubjectsButton.className = 'class-pill px-4 py-2 rounded-full text-sm font-medium cursor-pointer flex items-center bg-gray-200 hover:bg-gray-300';
+            allSubjectsButton.dataset.class = 'all';
+            allSubjectsButton.innerHTML = `
+                <span class="material-symbols-outlined mr-1 text-sm">${SUBJECT_ICONS['all']}</span>
+                All Subjects
+            `;
+
+            allSubjectsButton.addEventListener('click', () => {
+                setActiveClass('all');
+                loadContent('all', currentSearchQuery);
+            });
+
+            subjectPills.appendChild(allSubjectsButton);
+
+            // Adjust visibility based on search input
+            searchInput.addEventListener('input', () => {
+                if (searchInput.value.trim() === '') {
+                    allSubjectsButton.classList.add('opacity-50', 'pointer-events-none');
+                    setActiveClass('all');
+                    loadContent('all', currentSearchQuery);
+                } else {
+                    allSubjectsButton.classList.remove('opacity-50', 'pointer-events-none');   
+                    setActiveClass('all');
+                    loadContent('all', currentSearchQuery);
+                }
+            });
+
+            if (searchInput.value.trim() === '') {
+                allSubjectsButton.classList.add('opacity-50', 'pointer-events-none');
+            }
+
+            // Load other subject pills
+            const uniqueSubjects = [...new Set(curriculumData.map(item => item.subject))];
+
+            uniqueSubjects.forEach(subject => {
+                const subjectKey = subject.toLowerCase().replace(/\s+/g, '-');
+
+                if (subjectKey === 'math') {
+                    // Create dropdown for Math
+                    const dropdown = document.createElement('div');
+                    dropdown.className = 'dropdown relative';
+
+                    const dropdownButton = document.createElement('button');
+                    dropdownButton.className = 'class-pill px-4 py-2 rounded-full text-sm font-medium cursor-pointer flex items-center bg-gray-200 hover:bg-gray-300';
+                    dropdownButton.dataset.class = subjectKey;
+                    dropdownButton.innerHTML = `
+                        <span class="material-symbols-outlined mr-1 text-sm">${SUBJECT_ICONS[subjectKey] || 'book'}</span>
+                        Math
+                        <span class="material-symbols-outlined ml-1 text-sm">expand_more</span>
+                    `;
+
+                    const dropdownContent = document.createElement('div');
+                    dropdownContent.className = 'hidden absolute left-0 mt-2 w-40 bg-white rounded-lg shadow-lg z-10 border border-gray-100 py-1';
+
+                    const options = [
+                        { label: 'All', filter: 'math' },
+                        { label: 'AA', filter: 'math-aa' },
+                        { label: 'AI', filter: 'math-ai' }
+                    ];
+
+                    options.forEach(option => {
+                        const optionElement = document.createElement('div');
+                        optionElement.className = 'px-4 py-2 text-sm cursor-pointer hover:bg-gray-50';
+                        optionElement.dataset.class = option.filter;
+                        optionElement.textContent = option.label;
+
+                        if (option.filter === currentFilter) {
+                            optionElement.classList.add('active');
+                        }
+
+                        optionElement.addEventListener('click', () => {
+                            setActiveClass(option.filter);
+                            loadContent(option.filter, currentSearchQuery);
+                            dropdownContent.classList.add('hidden');
+                        });
+
+                        dropdownContent.appendChild(optionElement);
+                    });
+
+                    dropdown.appendChild(dropdownButton);
+                    dropdown.appendChild(dropdownContent);
+
+                    dropdownButton.addEventListener('click', () => {
+                        dropdownContent.classList.toggle('hidden');
+                    });
+
+                    subjectPills.appendChild(dropdown);
+                } else {
+                    // Normal pill for other subjects
+                    const pill = document.createElement('div');
+                    pill.className = 'class-pill px-4 py-2 rounded-full text-sm font-medium cursor-pointer flex items-center';
+                    pill.dataset.class = subjectKey;
+
+                    const iconName = SUBJECT_ICONS[subjectKey] || 'book';
+                    pill.innerHTML = `
+                        <span class="material-symbols-outlined mr-1 text-sm">${iconName}</span>
+                        ${subject}
+                    `;
+
+                    if (subjectKey === currentFilter) {
+                        pill.classList.add('active');
+                    }
+
+                    pill.addEventListener('click', () => {
+                        setActiveClass(subjectKey);
+                        loadContent(subjectKey, currentSearchQuery);
+                    });
+
+                    subjectPills.appendChild(pill);
+                }
+            });
+
+            // Add 'Topics' dropdown
+            const topicsDropdown = document.createElement('div');
+            topicsDropdown.className = 'dropdown relative opacity-50 pointer-events-none';
+
+            topicsDropdown.innerHTML = `
+                <button class="class-pill px-4 py-2 rounded-full text-sm font-medium cursor-pointer flex items-center bg-gray-200 hover:bg-gray-300">
+                    <span class="material-symbols-outlined mr-1 text-sm">filter_list</span>
+                    Topics
+                    <span class="material-symbols-outlined ml-1 text-sm">expand_more</span>
+                </button>
+                <div class="hidden absolute left-0 mt-2 w-40 bg-white rounded-lg shadow-lg z-10 border border-gray-100 py-1"></div>
+            `;
+
+            const topicsButton = topicsDropdown.querySelector('button');
+            const topicsContent = topicsDropdown.querySelector('div');
+
+            // Enable and populate topics dropdown when a subject is active
+            searchInput.addEventListener('input', () => {
+                const activeSubject = currentFilter !== 'all' ? currentFilter : null;
+                if (activeSubject) {
+                    topicsDropdown.classList.remove('opacity-50', 'pointer-events-none');
+                    topicsContent.innerHTML = ''; // Clear previous topics
+
+                    const subjectData = curriculumData.find(item => item.subject.toLowerCase().replace(/\s+/g, '-') === activeSubject);
+                    if (subjectData) {
+                        const sections = subjectData.sections;
+                        sections.forEach(section => {
+                            if (activeSubject === 'math') {
+                                // For Math, account for Core, AA, and AI subsections
+                                section.subsections.forEach(subsection => {
+                                    const optionElement = document.createElement('div');
+                                    optionElement.className = 'px-4 py-2 text-sm cursor-pointer hover:bg-gray-50';
+                                    optionElement.textContent = subsection.title;
+
+                                    optionElement.addEventListener('click', () => {
+                                        setActiveClass(subsection.path);
+                                        loadContent(subsection.path, currentSearchQuery);
+                                        topicsContent.classList.add('hidden');
+                                    });
+
+                                    topicsContent.appendChild(optionElement);
+                                });
+                            } else {
+                                // For other subjects, use sections as filters
+                                const optionElement = document.createElement('div');
+                                optionElement.className = 'px-4 py-2 text-sm cursor-pointer hover:bg-gray-50';
+                                optionElement.textContent = section.title;
+
+                                optionElement.addEventListener('click', () => {
+                                    setActiveClass(section.path);
+                                    loadContent(section.path, currentSearchQuery);
+                                    topicsContent.classList.add('hidden');
+                                });
+
+                                topicsContent.appendChild(optionElement);
+                            }
+                        });
+                    }
+                } else {
+                    topicsDropdown.classList.add('opacity-50', 'pointer-events-none');
+                }
+            });
+
+            // Add click toggle for topics dropdown
+            topicsButton.addEventListener('click', () => {
+                topicsContent.classList.toggle('hidden');
+            });
+
+            // Insert topics dropdown between 'All Subjects' and 'Math'
+            subjectPills.insertBefore(topicsDropdown, subjectPills.children[1]);
+        }
+        
+        // Load content based on filters and search
+        // Update: Ensure Math pill shows all Math-related lessons and dynamic icons are applied
+        function loadContent(filter = 'all', searchQuery = '') {
+            contentArea.innerHTML = '';
+
+            let filteredLessons = [...allLessons];
+
+            // Apply subject filter
+            if (filter !== 'all') {
+                filteredLessons = filteredLessons.filter(lesson => {
+                    const categories = lesson.categories.map(category => category.toLowerCase().replace(/\s+/g, '-'));
+                    if (filter === 'math') {
+                        return categories.includes('math') || categories.includes('math-aa') || categories.includes('math-ai');
+                    }
+                    return categories.includes(filter);
+                });
+            }
+
+            // Apply search filter if there's a query
+            if (searchQuery.trim()) {
+                const query = searchQuery.toLowerCase();
+                filteredLessons = filteredLessons.filter(lesson => {
+                    return (
+                        lesson.title.toLowerCase().includes(query) ||
+                        lesson.topic.toLowerCase().includes(query) ||
+                        lesson.tags.some(tag => tag.toLowerCase().includes(query)) ||
+                        lesson.section.toLowerCase().includes(query) ||
+                        (lesson.subsection && lesson.subsection.toLowerCase().includes(query))
+                    );
+                });
+            }
+
+            // Apply sorting
+            filteredLessons = sortLessons(filteredLessons, currentSort);
+
+            // Display content or no results message
+            if (filteredLessons.length === 0) {
+                noResults.classList.remove('hidden');
+            } else {
+                noResults.classList.add('hidden');
+                filteredLessons.forEach(lesson => {
+                    const card = document.createElement('div');
+                    card.className = 'content-card bg-white rounded-lg p-5 flex flex-col h-full';
+
+                    const subjectKey = lesson.subject.toLowerCase().replace(/\s+/g, '-');
+                    const iconName = SUBJECT_ICONS[subjectKey] || 'book';
+
+                    card.innerHTML = `
+                        <div class="flex-1">
+                            <div class="flex items-start mb-4">
+                                <span class="material-symbols-outlined mr-3 text-2xl" style="color: var(--primary);">${iconName}</span>
+                                <div>
+                                    <h3 class="font-medium text-lg mb-1 primary-text">${lesson.title}</h3>
+                                    <p class="text-gray-600 text-sm">${lesson.subsection || lesson.section}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex justify-between items-center text-xs text-gray-500 mt-4 pt-3 border-t border-gray-100">
+                            <div class="flex items-center space-x-2">
+                                <span class="text-gray-500">${lesson.subject}-${lesson.level || 'N/A'}</span>
+                                <span class="lesson-tag px-2 py-1 rounded-full">${lesson.topic}</span>
+                            </div>
+                            <span class="flex items-center">
+                                <span class="material-symbols-outlined mr-1 text-sm">schedule</span>
+                                ${lesson.time_estimate} min
+                            </span>
+                        </div>
+                    `;
+
+                    card.addEventListener('click', () => {
+                        openLessonModal(lesson, filteredLessons);
+                    });
+
+                    contentArea.appendChild(card);
+                });
+            }
+        }
+        
+        // Load topic filters based on the selected subject
+        function loadTopicFilters(filter = 'all') {
+            const topicArea = document.getElementById('content-area');
+            topicArea.innerHTML = '';
+
+            if (searchInput.value.trim() !== '') {
+                return; // Do not display topic filters when search is active
+            }
+
+            let topics = [];
+
+            if (filter === 'math') {
+                // Get sub-subfolders for Math based on the filter
+                const mathFolders = curriculumData.find(subject => subject.subject.toLowerCase() === 'math');
+                if (mathFolders) {
+                    mathFolders.sections.forEach(section => {
+                        if (filter === 'all' || (filter === 'math-aa' && section.title.includes('AA')) || (filter === 'math-ai' && section.title.includes('AI'))) {
+                            if (section.subsections) {
+                                section.subsections.forEach(subsection => {
+                                    topics.push({
+                                        title: subsection.title,
+                                        path: subsection.path
+                                    });
+                                });
+                            }
+                        }
+                    });
+                }
+            } else {
+                // Get subfolders for other subjects
+                const otherSubject = curriculumData.find(subject => subject.subject.toLowerCase() === filter);
+                if (otherSubject) {
+                    otherSubject.sections.forEach(section => {
+                        topics.push({
+                            title: section.title,
+                            path: section.path
+                        });
+                    });
+                }
+            }
+
+            // Render topics visually similar to lessons
+            topics.forEach(topic => {
+                const topicCard = document.createElement('div');
+                topicCard.className = 'content-card bg-white rounded-lg p-5 flex flex-col h-full';
+
+                topicCard.innerHTML = `
+                    <div class="flex-1">
+                        <h3 class="text-lg font-medium">${topic.title}</h3>
+                    </div>
+                `;
+
+                topicArea.appendChild(topicCard);
+            });
+        }
+        
+        // Sort lessons based on current sort option
+        function sortLessons(lessons, sortBy) {
+            switch(sortBy) {
+                case 'newest':
+                    return lessons.sort((a, b) => b.timestamp - a.timestamp);
+                case 'oldest':
+                    return lessons.sort((a, b) => a.timestamp - b.timestamp);
+                case 'duration':
+                    return lessons.sort((a, b) => b.time_estimate - a.time_estimate);
+                case 'topic':
+                    return lessons.sort((a, b) => a.topic.localeCompare(b.topic));
+                default:
+                    return lessons;
+            }
+        }
+        
+        // Perform search
+        function performSearch(query) {
+            const lowerQuery = query.toLowerCase();
+
+            const filteredResults = allLessons.filter(lesson => {
+                const searchText = [
+                    lesson.title.toLowerCase(),
+                    lesson.section.toLowerCase(),
+                    lesson.subject.toLowerCase(),
+                    lesson.topic.toLowerCase(),
+                    lesson.level?.toLowerCase() || '',
+                    lesson.tags.join(' ').toLowerCase(),
+                    lesson.time_estimate.toString(),
+                    new Date(lesson.timestamp).toLocaleDateString().toLowerCase()
+                ].join(' ');
+
+                // Fuzzy matching for approximate queries
+                return searchText.includes(lowerQuery) ||
+                       lowerQuery.split(' ').every(word => searchText.includes(word));
+            });
+
+            resultsList.innerHTML = '';
+
+            if (filteredResults.length === 0) {
+                resultsList.innerHTML = '<p class="text-gray-500 py-4 text-center">No results found for "' + query + '"</p>';
+            } else {
+                filteredResults.slice(0, 10).forEach(result => {
+                    const resultItem = document.createElement('div');
+                    resultItem.className = 'search-suggestion p-2 hover:bg-gray-50 rounded-lg cursor-pointer';
+
+                    // Highlight matching parts
+                    const highlightedTitle = result.title.replace(new RegExp(`(${query})`, 'gi'), '<mark>$1</mark>');
+                    const highlightedTags = result.tags.map(tag => tag.replace(new RegExp(`(${query})`, 'gi'), '<mark>$1</mark>')).join(', ');
+
+                    resultItem.innerHTML = `
+                        <div class="flex flex-col">
+                            <span class="font-medium">${result.subject} - ${highlightedTitle}</span>
+                            <span class="text-sm text-gray-500">${result.section}</span>
+                            <span class="text-xs text-gray-400">Tags: ${highlightedTags}</span>
+                        </div>
+                    `;
+
+                    resultItem.addEventListener('click', () => {
+                        searchInput.value = result.title;
+                        searchResults.classList.add('hidden');
+                        loadContent(currentFilter, result.title);
+                    });
+
+                    resultsList.appendChild(resultItem);
+                });
+            }
+
+            searchResults.classList.remove('hidden');
+        }
+
+        // Generate Table of Contents (TOC)
+        function generateTOC(markdown) {
+            const toc = [];
+            const lines = markdown.split('\n');
+
+            lines.forEach(line => {
+                const match = line.match(/^(#{1,6})\s+(.*)/);
+                if (match) {
+                    const level = match[1].length; // Heading level
+                    const text = match[2];
+                    const id = text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+                    toc.push({ level, text, id });
+                }
+            });
+
+            return toc.map(item => `
+                <a href="#${item.id}" class="block ml-${item.level * 2} text-sm text-gray-600 hover:text-gray-800">${item.text}</a>
+            `).join('');
+        }
+
+        // Render Markdown with TOC and FancyMD
+        function renderMarkdownWithTOC(markdown) {
+            const tocHTML = generateTOC(markdown);
+            const processedMarkdown = markdown.replace(/^(#{1,6})\s+(.*)/gm, (match, hashes, title) => {
+                const id = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+                return `<h${hashes.length} id="${id}">${title}</h${hashes.length}>`;
+            });
+
+            const renderedMarkdown = marked.parse(processedMarkdown, {
+                gfm: true, // Enable GitHub Flavored Markdown
+                breaks: true, // Convert line breaks to <br>
+                smartLists: true, // Enable smart lists
+                smartypants: true // Enable smart punctuation
+            });
+
+            return `
+                <div class="toc mb-6 p-4 bg-gray-100 rounded-lg">
+                    <h3 class="text-lg font-medium mb-2">Table of Contents</h3>
+                    ${tocHTML}
+                </div>
+                <div class="markdown-content">
+                    ${renderedMarkdown}
+                </div>
+            `;
+        }
+
+        // Update renderMarkdown function to include TOC and FancyMD
+        function renderMarkdown(markdown) {
+            lessonContent.innerHTML = renderMarkdownWithTOC(markdown);
+
+            // Highlight code blocks
+            document.querySelectorAll('pre code').forEach((block) => {
+                hljs.highlightElement(block);
+            });
+
+            // Render LaTeX
+            renderMathInElement(lessonContent, {
+                delimiters: [
+                    {left: '$$', right: '$$', display: true},
+                    {left: '$', right: '$', display: false},
+                    {left: '\\(', right: '\\)', display: false},
+                    {left: '\\[', right: '\\]', display: true}
+                ],
+                throwOnError: false
+            });
+        }
+        
+        // Render markdown content with GFM features
+        function renderMarkdown(markdown) {
+            // Initialize markdown-it with GFM plugins
+            const md = window.markdownit({
+                html: true,
+                linkify: true,
+                typographer: true,
+                breaks: true
+            })
+            .use(window.markdownitEmoji)
+            .use(window.markdownitTaskLists, { enabled: true })
+            .use(window.markdownitContainer, 'info')
+            .use(window.markdownitContainer, 'warning')
+            .use(window.markdownitContainer, 'success');
+
+            // Render the markdown
+            const renderedMarkdown = md.render(markdown);
+
+            // Inject the rendered markdown into the lesson content
+            lessonContent.innerHTML = renderedMarkdown;
+
+            // Highlight code blocks
+            document.querySelectorAll('pre code').forEach((block) => {
+                hljs.highlightElement(block);
+            });
+
+            // Render LaTeX
+            renderMathInElement(lessonContent, {
+                delimiters: [
+                    {left: '$$', right: '$$', display: true},
+                    {left: '$', right: '$', display: false},
+                    {left: '\\(', right: '\\)', display: false},
+                    {left: '\\[', right: '\\]', display: true}
+                ],
+                throwOnError: false
+            });
+        }
+        
+        // Initialize Markdown-it with GFM features
+        const md = window.markdownit({
+            html: true,
+            linkify: true,
+            typographer: true,
+            breaks: true
+        })
+        .use(window.markdownitEmoji)
+        .use(window.markdownitTaskLists)
+        .use(window.markdownitContainer, 'info')
+        .use(window.markdownitMark);
+
+        // Render Markdown with GFM features
+        function renderMarkdown(markdown) {
+            lessonContent.innerHTML = renderMarkdownWithGFM(markdown);
+
+            // Highlight code blocks
+            document.querySelectorAll('pre code').forEach((block) => {
+                hljs.highlightElement(block);
+            });
+
+            // Render LaTeX
+            renderMathInElement(lessonContent, {
+                delimiters: [
+                    {left: '$$', right: '$$', display: true},
+                    {left: '$', right: '$', display: false},
+                    {left: '\\(', right: '\\)', display: false},
+                    {left: '\\[', right: '\\]', display: true}
+                ],
+                throwOnError: false
+            });
+        }
+        
+        // Set active class for subject pills and load content
+        function setActiveClass(className) {
+            currentFilter = className;
+            const pills = document.querySelectorAll('.class-pill');
+            pills.forEach(pill => {
+                if (pill.dataset.class === className) {
+                    pill.classList.add('active');
+                } else {
+                    pill.classList.remove('active');
+                }
+            });
+            loadContent(currentFilter === 'all' ? '' : currentFilter, ''); // Reset search query when switching filters
+        }
+        
+        // Add event listener for sort dropdown functionality
+        sortButton.addEventListener('click', () => {
+            sortOptions.classList.toggle('hidden');
+        });
+
+        document.addEventListener('click', (event) => {
+            if (!sortButton.contains(event.target) && !sortOptions.contains(event.target)) {
+                sortOptions.classList.add('hidden');
+            }
+        });
+
+        // Update sorting functionality
+        sortOptions.querySelectorAll('[data-sort]').forEach(option => {
+            option.addEventListener('click', () => {
+                currentSort = option.dataset.sort;
+                sortButton.innerHTML = `<span class="material-symbols-outlined mr-1 text-base">sort</span>Sort by: ${option.textContent}`;
+                sortOptions.classList.add('hidden');
+                loadContent(currentFilter, currentSearchQuery);
+            });
+        });
+        
+        // Open static modal for Terms, Privacy, and Contact
+        async function openStaticModal(fileName, title) {
+            try {
+                const response = await fetch(`${REPO_URL}${fileName}`);
+                if (!response.ok) throw new Error('Failed to fetch content');
+
+                const markdownContent = await response.text();
+
+                // Set modal content for static pages
+                const staticModalTitle = document.getElementById('static-modal-title');
+                const staticModalContent = document.getElementById('static-modal-content');
+                const staticModal = document.getElementById('static-modal');
+
+                staticModalTitle.textContent = title;
+                staticModalContent.innerHTML = marked.parse(markdownContent);
+
+                // Highlight code blocks
+                document.querySelectorAll('#static-modal-content pre code').forEach((block) => {
+                    hljs.highlightElement(block);
+                });
+
+                staticModal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+            } catch (error) {
+                console.error('Error loading static content:', error);
+                const staticModalContent = document.getElementById('static-modal-content');
+                staticModalContent.innerHTML = `<p class="text-red-500">Error loading content. Please try again later.</p>`;
+            }
+        }
+
+        // Close static modal
+        function closeStaticModal() {
+            const staticModal = document.getElementById('static-modal');
+            staticModal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Event listeners for static modal links
+        document.querySelector('a[href="#terms"]').addEventListener('click', () => openStaticModal('terms.md', 'Terms of Service'));
+        document.querySelector('a[href="#privacy"]').addEventListener('click', () => openStaticModal('privacy.md', 'Privacy Policy'));
+        document.querySelector('a[href="#contact"]').addEventListener('click', () => openStaticModal('contact.md', 'Contact Us'));
+
+        // Add event listener for closing static modal
+        document.querySelector('#static-modal-close').addEventListener('click', closeStaticModal);
+        
+        // Open lesson modal
+        async function openLessonModal(lesson, lessonList = []) {
+            showLoading();
+            currentLessonList = lessonList;
+            currentLessonIndex = lessonList.findIndex(l => l.fullPath === lesson.fullPath);
+            
+            try {
+                // Fetch lesson content
+                const response = await fetch(`${REPO_URL}${lesson.fullPath}`);
+                if (!response.ok) throw new Error('Failed to fetch lesson');
+                
+                const markdownContent = await response.text();
+                
+                // Set modal content
+                lessonTitle.textContent = lesson.title;
+
+                // Conditionally show or hide topic, time, and date
+                lessonTopic.style.display = lesson.topic ? 'inline-block' : 'none';
+                lessonTopic.textContent = lesson.topic || '';
+
+                timeEstimate.style.display = lesson.time_estimate ? 'inline-block' : 'none';
+                timeEstimate.textContent = lesson.time_estimate || '';
+
+                lessonDate.style.display = lesson.timestamp ? 'inline-block' : 'none';
+                lessonDate.textContent = lesson.timestamp ? lesson.timestamp.toLocaleDateString() : '';
+
+                renderMarkdown(markdownContent);
+
+                // Conditionally hide navigation buttons and other fields for static pages
+                const isStaticPage = ['terms.md', 'privacy.md', 'contact.md'].includes(lesson.fullPath);
+                lessonNavPrev.style.display = isStaticPage ? 'none' : 'flex';
+                lessonNavNext.style.display = isStaticPage ? 'none' : 'flex';
+                lessonTopic.style.display = isStaticPage ? 'none' : lessonTopic.style.display;
+                timeEstimate.style.display = isStaticPage ? 'none' : timeEstimate.style.display;
+                lessonDate.style.display = isStaticPage ? 'none' : lessonDate.style.display;
+
+                lessonModal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+                hideLoading();
+            } catch (error) {
+                console.error('Error loading lesson:', error);
+                lessonContent.innerHTML = `<p class="text-red-500">Error loading lesson content. Please try again later.</p>`;
+                hideLoading();
+            }
+        }
+        
+        // Render markdown content with LaTeX support
+        function renderMarkdown(markdown) {
+            // Process interactive elements before markdown rendering
+            const processedMarkdown = markdown.replace(/\[reveal\](.*?)\[\/reveal\]/gs, (match, content) => {
+                return `<div class="my-4">
+                    <button class="px-3 py-1 rounded-md text-sm font-medium mb-2" style="background-color: var(--primary); color: white;">
+                        Reveal Solution
+                    </button>
+                    <div class="hidden bg-gray-50 p-3 rounded-md">${content}</div>
+                </div>`;
+            });
+            
+            // Render markdown
+            lessonContent.innerHTML = marked.parse(processedMarkdown);
+            
+            // Highlight code blocks
+            document.querySelectorAll('pre code').forEach((block) => {
+                hljs.highlightElement(block);
+            });
+            
+            // Render LaTeX
+            renderMathInElement(lessonContent, {
+                delimiters: [
+                    {left: '$$', right: '$$', display: true},
+                    {left: '$', right: '$', display: false},
+                    {left: '\\(', right: '\\)', display: false},
+                    {left: '\\[', right: '\\]', display: true}
+                ],
+                throwOnError: false
+            });
+            
+            // Add event listeners to reveal buttons
+            document.querySelectorAll('button').forEach(button => {
+                if (button.textContent === 'Reveal Solution') {
+                    button.addEventListener('click', function() {
+                        const content = this.nextElementSibling;
+                        content.classList.toggle('hidden');
+                        this.textContent = content.classList.contains('hidden') ? 'Reveal Solution' : 'Hide Solution';
+                    });
+                }
+            });
+        }
+        
+        // Update lesson navigation buttons
+        function updateLessonNavButtons() {
+            lessonNavPrev.style.visibility = currentLessonIndex > 0 ? 'visible' : 'hidden';
+            lessonNavNext.style.visibility = currentLessonIndex < currentLessonList.length - 1 ? 'visible' : 'hidden';
+            
+            lessonNavPrev.onclick = () => {
+                if (currentLessonIndex > 0) {
+                    openLessonModal(currentLessonList[currentLessonIndex - 1], currentLessonList);
+                }
+            };
+            
+            lessonNavNext.onclick = () => {
+                if (currentLessonIndex < currentLessonList.length - 1) {
+                    openLessonModal(currentLessonList[currentLessonIndex + 1], currentLessonList);
+                }
+            };
+        }
+        
+        // Close lesson modal
+        function closeLessonModal() {
+            lessonModal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+        
+        // Show loading state
+        function showLoading() {
+            loadingSpinner.classList.remove('hidden');
+            contentArea.classList.add('hidden');
+        }
+        
+        // Hide loading state
+        function hideLoading() {
+            loadingSpinner.classList.add('hidden');
+            contentArea.classList.remove('hidden');
+        }
+        
+        // Show error state
+        function showError() {
+            loadingSpinner.classList.add('hidden');
+            contentArea.classList.add('hidden');
+            noResults.classList.remove('hidden');
+            noResults.innerHTML = `
+                <span class="material-symbols-outlined text-4xl text-red-400 mb-3">error</span>
+                <h4 class="text-lg font-medium text-gray-600">Failed to load content</h4>
+                <p class="text-gray-500 mt-1">Please check your connection and try again</p>
+                <button id="retry-button" class="mt-4 px-4 py-2 rounded-md text-white font-medium" style="background-color: var(--primary);">
+                    Retry
+                </button>
+            `;
+            
+            document.getElementById('retry-button').addEventListener('click', initApp);
+        }
+        
+        // Close modal on Escape key press
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeLessonModal();
+                closeStaticModal();
+            }
+        });
+        
+        // Dark Mode Toggle
+        const userPrefersDark = localStorage.getItem('darkMode') === 'true';
+        if (userPrefersDark) {
+            document.body.classList.add('dark-mode');
+        }
+
+        darkModeToggle.addEventListener('click', () => {
+            const isDarkMode = document.body.classList.toggle('dark-mode');
+            localStorage.setItem('darkMode', isDarkMode);
+            darkModeToggle.innerHTML = `<span class="material-symbols-outlined">${isDarkMode ? 'dark_mode' : 'light_mode'}</span>`;
+        });
+        
+        // Typewriter effect for title
+        document.addEventListener('DOMContentLoaded', () => {
+            const titleElement = document.querySelector('h1.text-4xl.font-bold.mb-4.primary-text');
+            const titleText = 'IVYSTUDY.org';
+            let currentIndex = 0;
+            let hasMadeTypo = false;
+            const baseTypingSpeed = 120; // Increased base speed of typing in ms
+            const pauseAfterTypo = 800; // Pause after fixing typo
+            const pauseAfterDelete = 500; // Pause after deleting the typo
+            const pauseAfterCompletion = 1000; // Pause after typing completion
+            const pauseBeforeY = 300; // Extra pause before typing 'y'
+            const cursor = '<span class="blinking-cursor">_</span>';
+
+
+            function getTypingSpeed(index) {
+                // Simulate a smoother speed curve: faster at the start, slower at the end
+                const progress = index / titleText.length;
+                return baseTypingSpeed + Math.sin(progress * Math.PI) * 80; // Adjusted multiplier for smoother effect
+            }
+
+            // Adjust the behavior to remove the cursor immediately after all characters are typed
+            function typeWriter() {
+                if (currentIndex <= titleText.length) {
+                    if (!hasMadeTypo && currentIndex === 2) {
+                        // Introduce a typo by typing 'B' instead of 'V'
+                        titleElement.innerHTML = titleText.slice(0, 1) + 'B' + cursor;
+                        hasMadeTypo = true;
+                        setTimeout(() => {
+                            // Delete the typo
+                            titleElement.innerHTML = titleText.slice(0, 1) + cursor;
+                            setTimeout(() => {
+                                // Continue typing correctly
+                                currentIndex++;
+                                typeWriter();
+                            }, pauseAfterDelete);
+                        }, pauseAfterTypo);
+                    } else {
+                        if (currentIndex === 3) {
+                            // Type 'V' and add a delay before 'Y'
+                            titleElement.innerHTML = titleText.slice(0, currentIndex) + cursor;
+                            currentIndex++;
+                            setTimeout(() => {
+                                titleElement.innerHTML = titleText.slice(0, currentIndex) + cursor;
+                                currentIndex++;
+                                setTimeout(typeWriter, getTypingSpeed(currentIndex));
+                            }, 100); // 100ms delay before typing 'Y'
+                        } else {
+                            // Type the next character
+                            titleElement.innerHTML = titleText.slice(0, currentIndex) + cursor;
+                            currentIndex++;
+                            setTimeout(typeWriter, getTypingSpeed(currentIndex));
+                        }
+                    }
+                } else {
+                    // Add a 1-second delay and ensure the cursor is turned off while in the blink-off state
+                    setTimeout(() => {
+                        const cursorElement = document.querySelector('.blinking-cursor');
+                        if (cursorElement) {
+                            cursorElement.style.animation = 'none';
+                            cursorElement.style.opacity = '0';
+                        }
+                    }, 1500); // 1-second delay + 500ms to align with blink-off state
+                }
+            }
+
+            // Add blinking cursor style
+            const style = document.createElement('style');
+            style.textContent = `
+                .blinking-cursor {
+                    display: inline-block;
+                    animation: blink 1s step-end infinite;
+                }
+
+                @keyframes blink {
+                    0%, 100% { opacity: 1; }
+                    50% { opacity: 0; }
+                }
+            `;
+            document.head.appendChild(style);
+
+            // Start the typewriter effect
+            typeWriter();
+        });
+        
+        // Remove loading screen immediately after animation
+        window.addEventListener('load', () => {
+            const loadingScreen = document.querySelector('.loading-screen');
+            const boxBorder = document.querySelector('.box-border');
+
+            boxBorder.addEventListener('animationend', () => {
+                loadingScreen.style.display = 'none'; // Hide the loading screen immediately
+            });
+        });
+
+        // Initialize the application
+        initApp();
+
+        function initSearchBar() {
+            const searchInput = document.getElementById('search-input');
+            const searchSuggestions = document.getElementById('search-suggestions');
+            const suggestionsList = document.getElementById('suggestions-list');
+            const searchResults = document.getElementById('search-results');
+            const resultsList = document.getElementById('results-list');
+            const closeSearch = document.getElementById('close-search');
+
+            searchInput.addEventListener('focus', () => {
+                if (searchInput.value.trim() === '' && allLessons.length > 0) {
+                    initSearchSuggestions();
+                    searchSuggestions.classList.remove('hidden');
+                }
+            });
+
+            searchInput.addEventListener('input', () => {
+                if (searchInput.value.trim() === '') {
+                    searchSuggestions.classList.add('hidden');
+                    searchResults.classList.add('hidden');
+                    loadContent(currentFilter); // Reload content for the current filter
+                    return;
+                }
+
+                searchSuggestions.classList.add('hidden');
+                performSearch(searchInput.value);
+            });
+
+            searchInput.addEventListener('keyup', (e) => {
+                if (e.key === 'Enter') {
+                    searchSuggestions.classList.add('hidden');
+                    performSearch(searchInput.value);
+                }
+            });
+
+            closeSearch.addEventListener('click', () => {
+                searchResults.classList.add('hidden');
+                resultsList.innerHTML = '';
+                recommendations.classList.add('hidden');
+                recommendationsList.innerHTML = '';
+                searchInput.value = '';
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!searchInput.contains(e.target) && !searchSuggestions.contains(e.target)) {
+                    searchSuggestions.classList.add('hidden');
+                }
+            });
+        }
+
+        // Add event listener to search input for dynamic filtering
+        searchInput.addEventListener('input', (event) => {
+            const query = event.target.value;
+
+            // Clear any existing timeout to debounce the search
+            if (searchTimeout) {
+                clearTimeout(searchTimeout);
+            }
+
+            // Set a timeout to perform the search after a short delay
+            searchTimeout = setTimeout(() => {
+                currentSearchQuery = query;
+                loadContent(currentFilter, currentSearchQuery);
+            }, 300); // 300ms debounce delay
+        });
+        
+        function performSearch(query) {
+            const lowerQuery = query.toLowerCase();
+
+            const filteredResults = allLessons.filter(lesson => {
+                const searchText = [
+                    lesson.title.toLowerCase(),
+                    lesson.section.toLowerCase(),
+                    lesson.subject.toLowerCase(),
+                    lesson.topic.toLowerCase(),
+                    lesson.level?.toLowerCase() || '',
+                    lesson.tags.join(' ').toLowerCase(),
+                    lesson.time_estimate.toString(),
+                    new Date(lesson.timestamp).toLocaleDateString().toLowerCase()
+                ].join(' ');
+
+                // Fuzzy matching for approximate queries
+                return searchText.includes(lowerQuery) ||
+                       lowerQuery.split(' ').every(word => searchText.includes(word));
+            });
+
+            resultsList.innerHTML = '';
+
+            if (filteredResults.length === 0) {
+                resultsList.innerHTML = '<p class="text-gray-500 py-4 text-center">No results found for "' + query + '"</p>';
+            } else {
+                filteredResults.slice(0, 10).forEach(result => {
+                    const resultItem = document.createElement('div');
+                    resultItem.className = 'search-suggestion p-2 hover:bg-gray-50 rounded-lg cursor-pointer';
+
+                    // Highlight matching parts
+                    const highlightedTitle = result.title.replace(new RegExp(`(${query})`, 'gi'), '<mark>$1</mark>');
+                    const highlightedTags = result.tags.map(tag => tag.replace(new RegExp(`(${query})`, 'gi'), '<mark>$1</mark>')).join(', ');
+
+                    resultItem.innerHTML = `
+                        <div class="flex flex-col">
+                            <span class="font-medium">${result.subject} - ${highlightedTitle}</span>
+                            <span class="text-sm text-gray-500">${result.section}</span>
+                            <span class="text-xs text-gray-400">Tags: ${highlightedTags}</span>
+                        </div>
+                    `;
+
+                    resultItem.addEventListener('click', () => {
+                        searchInput.value = result.title;
+                        searchResults.classList.add('hidden');
+                        loadContent(currentFilter, result.title);
+                    });
+
+                    resultsList.appendChild(resultItem);
+                });
+            }
+
+            searchResults.classList.remove('hidden');
+        }
+
+        // Initialize search bar functionality
+        initSearchBar();
+
+        // Add click-away functionality for Math dropdown
+        const mathDropdown = document.querySelector('.dropdown');
+        const mathDropdownButton = mathDropdown.querySelector('button');
+        const mathDropdownContent = mathDropdown.querySelector('div');
+
+        document.addEventListener('click', (event) => {
+            const dropdowns = document.querySelectorAll('.dropdown-content');
+            dropdowns.forEach(dropdown => {
+                if (!dropdown.contains(event.target) && !dropdown.previousElementSibling.contains(event.target)) {
+                    dropdown.classList.add('hidden');
+                }
+            });
+        });
+
+        function resetMathDropdown() {
+            const mathDropdown = document.querySelector('.dropdown-content');
+            if (mathDropdown) {
+                const allOption = mathDropdown.querySelector('[data-class="math"]');
+                if (allOption) {
+                    allOption.click();
+                }
+            }
+        }
+
+        // Update the search input event listener to handle topic filters
+        searchInput.addEventListener('input', () => {
+            if (searchInput.value.trim() === '') {
+                loadTopicFilters(currentFilter); // Show topic filters when search is cleared
+            } else {
+                setActiveClass('all'); // Automatically apply the 'clear' filter
+                loadContent(currentFilter, searchInput.value.trim()); // Load content based on search
+            }
+
+            // Trigger 'All Subjects' functionality when enabled or disabled
+            const allSubjectsButton = document.querySelector('[data-class="all"]');
+            if (allSubjectsButton) {
+                if (searchInput.value.trim() === '') {
+                    allSubjectsButton.classList.add('opacity-50', 'pointer-events-none');
+                } else {
+                    allSubjectsButton.classList.remove('opacity-50', 'pointer-events-none');
+                    setActiveClass('all');
+                    loadContent('all', currentSearchQuery);
+                }
+            }
+        });
+
+        // Update 'Topics' dropdown when a subject pill is clicked
+        function updateTopicsDropdown() {
+            const activeSubject = currentFilter !== 'all' ? currentFilter : null;
+            if (activeSubject) {
+                topicsDropdown.classList.remove('opacity-50', 'pointer-events-none');
+                topicsContent.innerHTML = ''; // Clear previous topics
+
+                const subjectData = curriculumData.find(item => item.subject.toLowerCase().replace(/\s+/g, '-') === activeSubject);
+                if (subjectData) {
+                    const sections = subjectData.sections;
+                    sections.forEach(section => {
+                        if (activeSubject === 'math') {
+                            // For Math, account for Core, AA, and AI subsections
+                            section.subsections.forEach(subsection => {
+                                const optionElement = document.createElement('div');
+                                optionElement.className = 'px-4 py-2 text-sm cursor-pointer hover:bg-gray-50';
+                                optionElement.textContent = subsection.title;
+
+                                optionElement.addEventListener('click', () => {
+                                    setActiveClass(subsection.path);
+                                    loadContent(subsection.path, currentSearchQuery);
+                                    topicsContent.classList.add('hidden');
+                                });
+
+                                topicsContent.appendChild(optionElement);
+                            });
+                        } else {
+                            // For other subjects, use sections as filters
+                            const optionElement = document.createElement('div');
+                            optionElement.className = 'px-4 py-2 text-sm cursor-pointer hover:bg-gray-50';
+                            optionElement.textContent = section.title;
+
+                            optionElement.addEventListener('click', () => {
+                                setActiveClass(section.path);
+                                loadContent(section.path, currentSearchQuery);
+                                topicsContent.classList.add('hidden');
+                            });
+
+                            topicsContent.appendChild(optionElement);
+                        }
+                    });
+                }
+            } else {
+                topicsDropdown.classList.add('opacity-50', 'pointer-events-none');
+            }
+        }
+
+        // Call updateTopicsDropdown when a subject pill is clicked
+        subjectPills.addEventListener('click', (event) => {
+            if (event.target.closest('.class-pill')) {
+                updateTopicsDropdown();
+            }
+        });
+    </script>
+</body>
+</html>
