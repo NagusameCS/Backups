@@ -1,0 +1,1690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IVYSTUDY</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="/js/themeManager.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">
+    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/NagusameCS/IVY/main/favicon.png">
+    <style>
+        /* Font imports */
+        @import url('https://fonts.googleapis.com/css2?family=BIZ+UDPMincho:wght@400;700&display=swap');
+        
+        :root {
+            --primary: #1a202c;
+            --accent: #E4EEE9;
+            --pillbg: #B7D2C0;
+            --pillhover: #9fc2ad;
+        }
+        
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background-color: #f8fafc;
+            color: var(--primary);
+            transition: background-color 0.3s ease;
+        }
+        
+        /* Background image carousel */
+        .hero-container {
+            position: relative;
+            min-height: 100vh;
+            overflow: hidden;
+            -webkit-backdrop-filter: blur(3px);
+            backdrop-filter: blur(3px);
+        }
+        
+        .background-carousel {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+        
+        .background-image {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out;
+        }
+        
+        .background-image.active {
+            opacity: 1;
+        }
+        
+        /* Gradient overlay */
+        .gradient-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.6) 40%, rgba(0, 0, 0, 0) 100%);
+            z-index: 1;
+        }
+        
+        /* Content styling */
+        .hero-content {
+            position: relative;
+            z-index: 20;
+            text-align: center;
+            min-height: 100vh;
+            padding: 2rem 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end; /* Changed from center to flex-end */
+            padding-bottom: 15vh; /* Added padding at the bottom */
+            transition: all 0.5s ease;
+        }
+        
+        .hero-title {
+            font-size: clamp(2.5rem, 5vw, 5rem);
+            line-height: 1.1;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(to right, #ffffff, #e5fce7);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: opacity 0.5s ease;
+            max-width: 1200px;
+        }
+        
+        .hero-subtitle {
+            font-size: clamp(1.2rem, 2vw, 1.75rem);
+            max-width: 800px;
+            margin: 0 auto 3rem;
+            color: rgba(255, 255, 255, 0.9);
+            transition: opacity 0.5s ease;
+            line-height: 1.5;
+        }
+        
+        /* Action buttons container */
+        .action-buttons {
+            margin-top: 3rem;
+            transition: all 0.3s ease;
+        }
+        
+        /* Dark mode adjustments */
+        .dark-mode .hero-title {
+            background: linear-gradient(to right, #ffffff, #e5fce7);
+            -webkit-background-clip: text;
+            background-clip: text;
+        }
+        
+        .dark-mode .hero-subtitle {
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        /* Original styles (maintaining functionality) */
+        .hero-gradient {
+            background: linear-gradient(135deg, hsl(125, 67%, 96%) 0%, #e5fce7 100%);
+        }
+        
+        .dark-mode .hero-gradient {
+            background: linear-gradient(135deg, #282b30 0%, #2e3033 100%);
+        }
+        
+        /* Enhanced feature cards */
+        .feature-card {
+            background: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            transform: translateY(0);
+            will-change: transform, box-shadow;
+            contain: content;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+                        0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        
+        .dark-mode .feature-card {
+            background: #1f2937;
+        }
+        
+        .dark-mode .feature-card:hover {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2),
+                        0 2px 4px -1px rgba(0, 0, 0, 0.1);
+        }
+        
+        .feature-icon {
+            position: relative;
+            transition: transform 0.3s ease;
+            will-change: transform;
+        }
+        
+        .feature-icon:hover {
+            transform: scale(1.1);
+        }
+        
+        /* Remove glow effects */
+        .feature-icon::after {
+            display: none;
+        }
+        
+        /* Smooth transitions */
+        .feature-card, .hero-content, .background-image, .action-buttons a {
+            transition-property: all;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            transition-duration: 300ms;
+        }
+        
+        /* Prevent layout shifts */
+        .hero-container, .feature-card, .statistics-section, .testimonials-section {
+            contain: content;
+            content-visibility: auto;
+        }
+        
+        /* Performance optimizations */
+        .hero-content, .feature-card {
+            will-change: transform;
+            backface-visibility: hidden;
+        }
+        
+        .typewriter {
+            border-right: 2px solid var(--primary);
+            animation: blink 0.75s step-end infinite;
+            color: var(--primary);
+        }
+        
+        @keyframes blink {
+            from, to { border-color: transparent }
+            50% { border-color: var(--primary) }
+        }
+        
+        .dark-mode .typewriter {
+            border-right-color: #f0f0f0;
+            color: #f0f0f0;
+        }
+        
+        .scroll-down {
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-20px);}
+            60% {transform: translateY(-10px);}
+        }
+        
+        /* Dark mode toggle styles */
+        #dark-mode-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            position: fixed;
+            top: 16px;
+            right: 16px;
+            background-color: white;
+            z-index: 50;
+            cursor: pointer;
+        }
+        
+        .dark-mode #dark-mode-toggle {
+            background-color: #2d3748;
+        }
+        
+        /* Menu Button Styles */
+        .menu-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            background: transparent;
+            border: none;
+            border-radius: 8px;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+        
+        .menu-button .line {
+            width: 20px;
+            height: 2px;
+            background: #f0f0f0;
+            position: absolute;
+            transition: all 0.3s ease;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1001;
+        }
+        
+        .menu-button .line::before,
+        .menu-button .line::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 2px;
+            background: #f0f0f0;
+            transition: all 0.3s ease;
+            left: 0;
+        }
+        
+        .menu-button .line::before {
+            transform: translateY(-8px);
+        }
+        
+        .menu-button .line::after {
+            transform: translateY(8px);
+        }
+        
+        /* Menu Button Active State */
+        .menu-button.active .line {
+            background: transparent !important;
+        }
+        
+        .menu-button.active .line::before,
+        .menu-button.active .line::after {
+            background: #1a202c;
+        }
+        
+        .menu-button.active .line::before {
+            transform: rotate(45deg);
+        }
+        
+        .menu-button.active .line::after {
+            transform: rotate(-45deg);
+        }
+        
+        /* Dark Mode Menu Button Styles */
+        body.dark-mode .menu-button .line,
+        body.dark-mode .menu-button .line::before,
+        body.dark-mode .menu-button .line::after {
+            background: #f0f0f0;
+        }
+        
+        body.dark-mode .menu-button.active .line::before,
+        body.dark-mode .menu-button.active .line::after {
+            background: #f0f0f0;
+        }
+        
+        /* Sidebar Styles */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -300px;
+            width: 300px;
+            height: 100%;
+            background: white;
+            box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+            z-index: 999;
+            transition: left 0.3s ease;
+            overflow-y: auto;
+        }
+        
+        .sidebar.active {
+            left: 0;
+        }
+        
+        .sidebar-content {
+            padding: 80px 20px 20px;
+        }
+        
+        .nav-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .nav-menu-item {
+            padding: 12px 16px;
+            margin-bottom: 8px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .nav-menu-item:hover {
+            background-color: rgba(74, 124, 114, 0.1);
+        }
+        
+        .sidebar-footer {
+            padding: 20px;
+            border-top: 2px solid rgba(0, 0, 0, 0.1);
+            margin-top: auto;
+        }
+        
+        /* Dark Mode Styles */
+        body.dark-mode {
+            background-color: #181818;
+            color: #f0f0f0;
+        }
+        
+        body.dark-mode .menu-button .line,
+        body.dark-mode .menu-button .line::before,
+        body.dark-mode .menu-button .line::after {
+            background: #f0f0f0;
+        }
+        
+        body.dark-mode .sidebar {
+            background: #242424;
+            color: #f0f0f0;
+        }
+        
+        body.dark-mode .nav-menu-item {
+            color: #f0f0f0;
+        }
+        
+        body.dark-mode .nav-menu-item:hover {
+            background-color: rgba(74, 124, 114, 0.2);
+        }
+        
+        body.dark-mode .sidebar-footer {
+            border-top: 2px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        body.dark-mode .bg-white {
+            background-color: #242424 !important;
+            color: #f0f0f0 !important;
+        }
+        
+        body.dark-mode .text-gray-600 {
+            color: #a0aec0 !important;
+        }
+        
+        body.dark-mode .border-gray-200 {
+            border-color: #2d3748 !important;
+        }
+        
+        /* Base styles */
+        .hero-title {
+            font-size: clamp(2rem, 5vw, 4.5rem);
+            line-height: 1.1;
+            margin-bottom: clamp(1rem, 3vh, 2rem);
+            max-width: min(90vw, 1200px);
+        }
+        
+        .hero-subtitle {
+            font-size: clamp(1.1rem, 2vw, 1.75rem);
+            margin-bottom: clamp(1.5rem, 4vh, 3rem);
+            max-width: min(85vw, 800px);
+            line-height: 1.5;
+        }
+        
+        /* Mobile adjustments */
+        @media (max-width: 640px) {
+            .hero-content {
+                text-align: center;
+                padding: 1rem;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+                gap: 1rem;
+                width: 100%;
+                padding: 0 1rem;
+            }
+            
+            .feature-card {
+                margin: 0.5rem;
+                padding: 1.25rem;
+            }
+            
+            .grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .scroll-down {
+                bottom: 2rem;
+            }
+            
+            .statistics-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        }
+        
+        /* Tablet adjustments */
+        @media (min-width: 641px) and (max-width: 1024px) {
+            .hero-content {
+                text-align: center;
+                padding: 2rem;
+            }
+            
+            .grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1.5rem;
+            }
+            
+            .statistics-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 2.5rem;
+            }
+        }
+        
+        /* Desktop refinements */
+        @media (min-width: 1025px) {
+            .hero-title {
+                font-size: 4.5rem;
+                max-width: 1000px;
+                margin: 0 auto 1.5rem;
+            }
+            .hero-subtitle {
+                font-size: 1.75rem;
+                max-width: 800px;
+            }
+            .hero-content {
+                padding-top: 25vh;
+                min-height: 90vh;
+                padding-bottom: 20vh; /* Adjusted padding for desktop */
+            }
+            .feature-card {
+                margin: 1rem;
+            }
+        }
+        /* Ensure images are high quality and responsive */
+        .background-image {
+            width: 100vw;
+            max-width: 100%;
+            height: 100vh;
+            max-height: 100vh;
+            object-fit: cover;
+            image-rendering: auto;
+        }
+        @media (max-width: 640px) {
+            .background-image {
+                height: 100%;
+                min-height: unset;
+                width: 100%;
+                max-width: 100%;
+            }
+        }
+        /* Ensure feature cards and sections are responsive */
+        @media (max-width: 1024px) {
+            .feature-card {
+                margin-bottom: 1.5rem;
+            }
+            .grid {
+                grid-template-columns: 1fr !important;
+            }
+        }
+        /* Prevent horizontal scroll */
+        html, body {
+            max-width: 100vw;
+            overflow-x: hidden;
+        }
+        /* Ensure feature cards and sections are responsive */
+        @media (max-width: 1024px) {
+            .feature-card {
+                margin-bottom: 1.5rem;
+            }
+            .grid {
+                grid-template-columns: 1fr !important;
+            }
+        }
+        /* Prevent horizontal scroll */
+        html, body {
+            max-width: 100vw;
+            overflow-x: hidden;
+        }
+        
+        /* Loading screen */
+        .loading-screen {
+            position: fixed;
+            inset: 0;
+            background-color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease-out;
+        }
+
+        .loading-content {
+            text-align: center;
+        }
+
+        .loading-logo {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #181818;
+        }
+
+        .loading-box {
+            width: 40px;
+            height: 40px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .box-border {
+            position: absolute;
+            inset: 0;
+            border: 3px solid #4caf50;
+            animation: rotate 1.5s ease-in-out infinite;
+        }
+
+        @keyframes rotate {
+            0% {
+                transform: rotate(0deg);
+                border-radius: 0;
+            }
+            50% {
+                transform: rotate(180deg);
+                border-radius: 50%;
+            }
+            100% {
+                transform: rotate(360deg);
+                border-radius: 0;
+            }
+        }
+
+        /* Dark mode loading screen adjustments */
+        body.dark-mode .loading-screen {
+            background-color: #181818;
+        }
+
+        body.dark-mode .loading-logo {
+            color: #f0f0f0;
+        }
+
+        .fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* Modern tooltips with backdrop blur */
+        [data-tooltip] {
+            position: relative;
+            cursor: help;
+        }
+
+        [data-tooltip]::before {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(10px);
+            padding: 0.5rem 1rem;
+            background: rgba(17, 24, 39, 0.95);
+            color: white;
+            font-size: 0.875rem;
+            white-space: nowrap;
+            border-radius: 6px;
+            pointer-events: none;
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 100;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            -webkit-backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+        }
+
+        [data-tooltip]:hover::before {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .dark-mode [data-tooltip]::before {
+            background: rgba(255, 255, 255, 0.95);
+            color: var(--primary);
+        }
+
+        /* Loading animation */
+        .loading-dots {
+            display: inline-block;
+            min-width: 60px;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        #viewer-count-text {
+            animation: fadeInUp 0.5s ease-out forwards;
+            display: inline-block;
+        }
+
+        /* Halftone effect overlay */
+        .halftone-overlay {
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(circle at center, rgba(0,0,0,0.1) 1px, transparent 1px);
+            background-size: 10px 10px;
+            opacity: 0.1;
+            pointer-events: none;
+            mix-blend-mode: multiply;
+        }
+
+        .halftone-light {
+            background-image: radial-gradient(circle at center, rgba(255,255,255,0.1) 1px, transparent 1px);
+        }
+
+        .feature-icon {
+            position: relative;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            will-change: transform;
+        }
+
+        .feature-icon:hover {
+            transform: rotate(15deg) scale(1.2);
+        }
+
+        .feature-icon::after {
+            content: '';
+            position: absolute;
+            inset: -5px;
+            border-radius: inherit;
+            background: inherit;
+            filter: blur(10px) opacity(0.7);
+            transform: translateZ(-1px);
+        }
+
+        .feature-card {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+                      0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        .feature-card:hover {
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2),
+                      0 10px 10px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .dark-mode .feature-card:hover {
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.4),
+                      0 10px 10px -5px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Japanese font for headings */
+        .hero-title, h2 {
+            font-family: 'BIZ UDPMincho', serif;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        /* Typography styles */
+        .ja-heading {
+            font-family: 'BIZ UDPMincho', serif;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+        }
+
+        .halftone-text {
+            position: relative;
+            display: inline-block;
+        }
+
+        .halftone-text::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(circle at center, rgba(0,0,0,0.1) 1px, transparent 1px);
+            background-size: 4px 4px;
+            opacity: 0.15;
+            mix-blend-mode: multiply;
+            pointer-events: none;
+        }
+
+        .dark-mode .halftone-text::after {
+            background-image: radial-gradient(circle at center, rgba(255,255,255,0.1) 1px, transparent 1px);
+            mix-blend-mode: screen;
+        }
+        
+        /* Partnership section styles */
+        .partnership-banner {
+            background: linear-gradient(135deg, #000B1C 0%, #001F3F 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .partnership-banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-.895-3-2-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffffff' fill-opacity='0.03' fill-rule='evenodd'/%3E%3C/svg%3E"),
+            linear-gradient(135deg, rgba(0,11,28,0.97) 0%, rgba(0,31,63,0.97) 100%);
+        background-blend-mode: overlay;
+        }
+        
+        .mission-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .mission-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            -webkit-backdrop-filter: blur(8px);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-radius: 1rem;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+        
+        .mission-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+        }
+        
+        .mission-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .highlight-text {
+            background: linear-gradient(120deg, rgba(72, 187, 120, 0.2) 0%, rgba(56, 161, 105, 0.2) 100%);
+            padding: 0.2em 0.4em;
+            border-radius: 0.3em;
+            color: #48bb78;
+            font-weight: 600;
+        }
+        
+        .tech-stack {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            margin: 2rem 0;
+        }
+        
+        .tech-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: rgba(255, 255, 255, 0.7);
+            transition: all 0.3s ease;
+        }
+        
+        .tech-item:hover {
+            color: #48bb78;
+            transform: scale(1.05);
+        }
+        
+        /* Testimonial Navigation Arrows */
+        .nav-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.3);
+            border: none;
+            color: #333;
+            font-size: 24px;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            z-index: 2;
+        }
+        
+        .nav-arrow:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+        
+        .nav-arrow.prev {
+            left: 10px;
+        }
+        
+        .nav-arrow.next {
+            right: 10px;
+        }
+    </style>
+    <meta name="description" content="Free IB resources, study guides, and tools to help you excel in your International Baccalaureate journey. Access IA exemplars, EE guides, and study materials.">
+    <meta name="keywords" content="IB, International Baccalaureate, IB resources, study guides, IA exemplars, EE guides, IB study tools">
+    <meta name="author" content="IVYSTUDY.org">
+    
+    <!-- Open Graph / Social Media -->
+    <meta property="og:title" content="IVYSTUDY - Free IB Resources & Study Tools">
+    <meta property="og:description" content="Access free IB resources, study guides, IA exemplars, and tools to excel in your International Baccalaureate journey.">
+    <meta property="og:image" content="https://www.ivystudy.org/SocialBanner.png">
+    <meta property="og:url" content="https://www.ivystudy.org">
+    <meta property="og:type" content="website">
+    
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="IVYSTUDY - Free IB Resources & Study Tools">
+    <meta name="twitter:description" content="Access free IB resources, study guides, IA exemplars, and tools to excel in your International Baccalaureate journey.">
+    <meta name="twitter:image" content="https://www.ivystudy.org/SocialBanner.png">
+</head>
+<body class="min-h-screen flex flex-col" onload="ThemeManager.initialize()">
+    <!-- Loading Screen -->
+    <div class="loading-screen">
+        <div class="loading-content">
+            <div class="loading-logo">IVY</div>
+            <div class="loading-box">
+                <div class="box-border"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dark Mode Toggle Button -->
+    <button onclick="ThemeManager.toggle()" class="fixed top-4 right-4 p-2 rounded-full shadow-md" aria-label="Toggle Dark Mode">
+        
+    </button>
+
+    <!-- Sidebar Toggle Button -->
+    <button class="menu-button" id="menuButton" aria-label="Toggle Menu">
+        <div class="line"></div>
+    </button>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-content">
+            <nav class="nav-menu">
+                <a href="/home" class="nav-menu-item">
+                    <span class="material-symbols-outlined">home</span>
+                    Home
+                </a>
+                <a href="/info" class="nav-menu-item">
+                    <span class="material-symbols-outlined">planner_review</span>
+                    Stats
+                </a>
+                <a href="/" class="nav-menu-item">
+                    <span class="material-symbols-outlined">search</span>
+                    Search Resources
+                </a>
+                <a href="/exemplars" class="nav-menu-item">
+                    <span class="material-symbols-outlined">library_books</span>
+                    IA/EE Exemplars
+                </a>
+                <a href="/guide" class="nav-menu-item">
+                    <span class="material-symbols-outlined">menu_book</span>
+                    Site Guide
+                </a>
+                <a href="/overview" class="nav-menu-item">
+                    <span class="material-symbols-outlined">track_changes</span>
+                    Class Overviews
+                </a>
+                <a href="/timer" class="nav-menu-item">
+                    <span class="material-symbols-outlined">timer</span>
+                    Exam Timer
+                </a>
+                <a href="https://github.com/NagusameCS/IVY" class="nav-menu-item">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path fill-rule="evenodd" clip-rule="evenodd"
+                        d="M12 0C5.37 0 0 5.373 0 12c0 5.303 
+                        3.438 9.8 8.205 11.387.6.113.82-.258.82-.577
+                        0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61
+                        -.546-1.387-1.333-1.757-1.333-1.757-1.09-.745.083-.729.083-.729
+                        1.205.084 1.84 1.236 1.84 1.236 1.07 1.835 2.807 1.305 3.492.998
+                        .108-.775.418-1.305.76-1.605-2.665-.3-5.466-1.335-5.466-5.933
+                        0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176
+                        0 0 1.005-.322 3.3 1.23a11.52 11.52 0 013.003-.403
+                        c1.02.005 2.045.137 3.003.403 2.28-1.552 3.285-1.23
+                        3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91
+                        1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.21
+                        0 1.595-.015 2.88-.015 3.27 0 .315.21.69.825.57C20.565 
+                        21.795 24 17.295 24 12c0-6.627-5.373-12-12-12z" />
+                    </svg>
+                    GitHub
+                </a>
+                <a href="/teachers" class="nav-menu-item">
+                    <span class="material-symbols-outlined">help</span>
+                    For Educators
+                </a>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="flex items-center justify-between">
+                    <span class="text-sm text-gray-600">Theme</span>
+                    <button onclick="ThemeManager.toggle()" class="dark-mode-toggle">
+                        <span class="material-symbols-outlined theme-toggle-icon">light_mode</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Section with Background Carousel -->
+    <section class="hero-container relative min-h-screen flex items-center justify-center">
+        <!-- Background Carousel -->
+        <div class="background-carousel absolute inset-0 z-0">
+            <img src="/background1.jpg" alt="Background 1" class="background-image">
+            <img src="/background2.jpg" alt="Background 2" class="background-image">
+            <img src="/background3.jpg" alt="Background 3" class="background-image">
+            <img src="/background4.jpg" alt="Background 4" class="background-image">
+        </div>
+        
+        <!-- Gradient Overlay -->
+        <div class="gradient-overlay absolute inset-0 z-10 bg-gradient-to-b from-transparent via-black/60 to-black/80"></div>
+        
+        <!-- Hero Content -->
+        <div class="hero-content relative z-20 container mx-auto px-6 py-12 md:py-20 flex flex-col items-center justify-center min-h-screen">
+            <h1 class="hero-title" id="dynamic-title"></h1>
+            <p class="hero-subtitle" id="dynamic-subtitle"></p>
+            
+            <div class="action-buttons flex flex-col sm:flex-row justify-center gap-4 mb-16">
+                <a href="/" class="bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-8 rounded-full transition duration-300 transform hover:scale-105">
+                    Explore Resources
+                </a>
+                <a href="/guide" class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-3 px-8 rounded-full border border-gray-300 transition duration-300 transform hover:scale-105 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-white dark:border-gray-600">
+                    How It Works
+                </a>
+            </div>
+            
+            <div class="scroll-down absolute bottom-10 left-1/2 transform -translate-x-1/2">
+                <span class="material-symbols-outlined text-4xl text-white animate-bounce">
+                    expand_more
+                </span>
+            </div>
+            
+        </div>
+        
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-24 bg-white dark:bg-gray-900">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-20">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6 relative">
+                    <div class="halftone-overlay dark:halftone-light"></div>
+                    Everything You Need for IB Success
+                </h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
+                    Comprehensive resources designed to help you excel in your International Baccalaureate journey.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 px-4 sm:px-6 lg:px-8">
+                <!-- Feature 1 -->
+                <div class="feature-card bg-white dark:bg-gray-800 rounded-xl p-8 shadow-md transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
+                    <div class="feature-icon w-16 h-16 bg-violet-100 dark:bg-violet-900 rounded-full flex items-center justify-center mb-6 transform transition-all duration-500">
+                        <div class="halftone-overlay"></div>
+                        <span class="material-symbols-outlined text-violet-600 dark:text-violet-400 text-3xl transition-all duration-500">search</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Subject Resources</h3>
+                    <p class="text-gray-600 dark:text-gray-300">
+                        Access carefully curated notes, study guides, and practice questions for all IB subjects.
+                    </p>
+                </div>
+                
+                <!-- Feature 2 -->
+                <div class="feature-card bg-white dark:bg-gray-800 rounded-xl p-8 shadow-md transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
+                    <div class="feature-icon w-16 h-16 bg-amber-100 dark:bg-amber-900 rounded-full flex items-center justify-center mb-6 transform transition-all duration-500">
+                        <div class="halftone-overlay"></div>
+                        <span class="material-symbols-outlined text-amber-600 dark:text-amber-400 text-3xl transition-all duration-500">library_books</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">IA / EE Exemplars</h3>
+                    <p class="text-gray-600 dark:text-gray-300">
+                        High-scoring IA and EE examples with examiner comments to guide your own work.
+                    </p>
+                </div>
+                
+                <!-- Feature 3 -->
+                <div class="feature-card bg-white dark:bg-gray-800 rounded-xl p-8 shadow-md transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
+                    <div class="feature-icon w-16 h-16 bg-rose-100 dark:bg-rose-900 rounded-full flex items-center justify-center mb-6 transform transition-all duration-500">
+                        <div class="halftone-overlay"></div>
+                        <span class="material-symbols-outlined text-rose-600 dark:text-rose-400 text-3xl transition-all duration-500">timer</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Exam Tools</h3>
+                    <p class="text-gray-600 dark:text-gray-300">
+                        Customizable timers, revision planners, and past paper organizers to optimize your study sessions.
+                    </p>
+                </div>
+                
+                <!-- Feature 4 -->
+                <div class="feature-card bg-white dark:bg-gray-800 rounded-xl p-8 shadow-md transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
+                    <div class="feature-icon w-16 h-16 bg-cyan-100 dark:bg-cyan-900 rounded-full flex items-center justify-center mb-6 transform transition-all duration-500">
+                        <div class="halftone-overlay"></div>
+                        <span class="material-symbols-outlined text-cyan-600 dark:text-cyan-400 text-3xl transition-all duration-500">track_changes</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Class Overviews</h3>
+                    <p class="text-gray-600 dark:text-gray-300">
+                        Get a sense of your classes. Understand the syllabus, assessment criteria, and key topics for each subject.
+                    </p>
+                </div>
+                 <!-- Feature 5 -->
+                <div class="feature-card bg-white dark:bg-gray-800 rounded-xl p-8 shadow-md transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
+                    <div class="feature-icon w-16 h-16 bg-teal-100 dark:bg-teal-900 rounded-full flex items-center justify-center mb-6 transform transition-all duration-500">
+                        <div class="halftone-overlay"></div>
+                        <span class="material-symbols-outlined text-teal-600 dark:text-teal-400 text-3xl transition-all duration-500">partner_exchange</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Legal and Transparent</h3>
+                    <p class="text-gray-600 dark:text-gray-300">
+                        Everything on this site is completely free, open-source, and legal. Using it won't jeopardize your diploma.
+                    </p>
+                </div>
+                
+                <!-- Feature 6 -->
+                <div class="feature-card bg-white dark:bg-gray-800 rounded-xl p-8 shadow-md transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
+                    <div class="feature-icon w-16 h-16 bg-indigo-100 dark:bg-indigo-900 rounded-full flex items-center justify-center mb-6 transform transition-all duration-500">
+                        <div class="halftone-overlay"></div>
+                        <span class="material-symbols-outlined text-indigo-600 dark:text-indigo-400 text-3xl transition-all duration-500">menu_book</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Site Guide</h3>
+                    <p class="text-gray-600 dark:text-gray-300">
+                        Understand how best to use this, all the features and functionality.
+                    </p>
+                </div>
+                
+                
+
+            </div>
+        </div>
+        
+        
+            </section>
+
+    <!-- Statistics Section -->
+    <section class="py-24 bg-gray-50 dark:bg-gray-800">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+                <div class="text-center transition-all duration-300 transform hover:scale-110">
+                    <div class="text-4xl font-bold text-green-600 dark:text-green-400 mb-2 counter transition-colors duration-300">100+</div>
+                    <div class="text-lg text-gray-600 dark:text-gray-300 transition-colors duration-300">Study Guides</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-4xl font-bold text-green-600 dark:text-green-400 mb-2 counter">50+</div>
+                    <div class="text-lg text-gray-600 dark:text-gray-300">IA/EE Examples</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-4xl font-bold text-green-600 dark:text-green-400 mb-2 counter">24</div>
+                    <div class="text-lg text-gray-600 dark:text-gray-300">IB Subjects Covered</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Testimonials Section -->
+    <section class="py-24 bg-white dark:bg-gray-900">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6">What Students Say</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
+                    Hear from IB students who have used our platform to excel in their studies.
+                </p>
+            </div>
+            <div class="relative overflow-hidden">
+                <div class="testimonial-carousel flex transition-transform duration-500">
+                    <!-- Group 1 -->
+                    <div class="testimonial-group flex-none w-full grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div class="bg-gray-50 dark:bg-gray-800 p-8 rounded-xl">
+                            <div class="flex items-center mb-4">
+                                <span class="material-symbols-outlined text-green-600 dark:text-green-400 text-3xl">format_quote</span>
+                            </div>
+                            <p class="text-gray-600 dark:text-gray-300 mb-6">"I used to split a Revision Village account with a friend just to get access. A site offering similar quality for free would be a revolution."</p>
+                            <div class="font-semibold text-gray-900 dark:text-white">Artemii Letov</div>
+                            <div class="text-sm text-gray-500">Full IB - Recieved President's Award for Academic Achievement</div>
+                            <div class="text-sm text-gray-500">Class of 2025</div>
+                        </div>
+                        <div class="bg-gray-50 dark:bg-gray-800 p-8 rounded-xl">
+                            <div class="flex items-center mb-4">
+                                <span class="material-symbols-outlined text-green-600 dark:text-green-400 text-3xl">format_quote</span>
+                            </div>
+                            <p class="text-gray-600 dark:text-gray-300 mb-6">"we need a quote"</p>
+                            <div class="font-semibold text-gray-900 dark:text-white">Name</div>
+                            <div class="text-sm text-gray-500">Class of xxxx</div>
+                        </div>
+                        <div class="bg-gray-50 dark:bg-gray-800 p-8 rounded-xl">
+                            <div class="flex items-center mb-4">
+                                <span class="material-symbols-outlined text-green-600 dark:text-green-400 text-3xl">format_quote</span>
+                            </div>
+                            <p class="text-gray-600 dark:text-gray-300 mb-6">"All the quotes after this are placeholders while we're getting quotes from seniors"</p>
+                            <div class="font-semibold text-gray-900 dark:text-white">Will</div>
+                            <div class="text-sm text-gray-500">Class of 2026</div>
+                        </div>
+                    </div>
+                    <!-- Group 2 -->
+                    <div class="testimonial-group flex-none w-full grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div class="bg-gray-50 dark:bg-gray-800 p-8 rounded-xl">
+                            <div class="flex items-center mb-4">
+                                <span class="material-symbols-outlined text-green-600 dark:text-green-400 text-3xl">format_quote</span>
+                            </div>
+                            <p class="text-gray-600 dark:text-gray-300 mb-6">"The Math HL resources and practice problems helped me understand complex topics. I improved from a 4 to a 6!"</p>
+                            <div class="font-semibold text-gray-900 dark:text-white">Alex T.</div>
+                            <div class="text-sm text-gray-500">Class of 2024</div>
+                        </div>
+                        <div class="bg-gray-50 dark:bg-gray-800 p-8 rounded-xl">
+                            <div class="flex items-center mb-4">
+                                <span class="material-symbols-outlined text-green-600 dark:text-green-400 text-3xl">format_quote</span>
+                            </div>
+                            <p class="text-gray-600 dark:text-gray-300 mb-6">"The TOK essay examples and guidelines were a lifesaver. Clear explanations of what examiners look for."</p>
+                            <div class="font-semibold text-gray-900 dark:text-white">Emma R.</div>
+                            <div class="text-sm text-gray-500">Class of 2023</div>
+                        </div>
+                        <div class="bg-gray-50 dark:bg-gray-800 p-8 rounded-xl">
+                            <div class="flex items-center mb-4">
+                                <span class="material-symbols-outlined text-green-600 dark:text-green-400 text-3xl">format_quote</span>
+                            </div>
+                            <p class="text-gray-600 dark:text-gray-300 mb-6">"The study guides for Biology SL are comprehensive and well-structured. Perfect for last-minute revision!"</p>
+                            <div class="font-semibold text-gray-900 dark:text-white">James H.</div>
+                            <div class="text-sm text-gray-500">Class of 2024</div>
+                        </div>
+                    </div>
+                    <!-- Group 3 -->
+                    <div class="testimonial-group flex-none w-full grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div class="bg-gray-50 dark:bg-gray-800 p-8 rounded-xl">
+                            <div class="flex items-center mb-4">
+                                <span class="material-symbols-outlined text-green-600 dark:text-green-400 text-3xl">format_quote</span>
+                            </div>
+                            <p class="text-gray-600 dark:text-gray-300 mb-6">"The Economics commentary examples helped me understand exactly what IB examiners are looking for. Great resource!"</p>
+                            <div class="font-semibold text-gray-900 dark:text-white">Sophia P.</div>
+                            <div class="text-sm text-gray-500">Class of 2024</div>
+                        </div>
+                        <div class="bg-gray-50 dark:bg-gray-800 p-8 rounded-xl">
+                            <div class="flex items-center mb-4">
+                                <span class="material-symbols-outlined text-green-600 dark:text-green-400 text-3xl">format_quote</span>
+                            </div>
+                            <p class="text-gray-600 dark:text-gray-300 mb-6">"The CAS project ideas and examples were super helpful. Made planning my activities much easier."</p>
+                            <div class="font-semibold text-gray-900 dark:text-white">Lucas M.</div>
+                            <div class="text-sm text-gray-500">Class of 2023</div>
+                        </div>
+                        <div class="bg-gray-50 dark:bg-gray-800 p-8 rounded-xl">
+                            <div class="flex items-center mb-4">
+                                <span class="material-symbols-outlined text-green-600 dark:text-green-400 text-3xl">format_quote</span>
+                            </div>
+                            <p class="text-gray-600 dark:text-gray-300 mb-6">"The exam timer feature helped me improve my time management. Now I finish all paper sections comfortably!"</p>
+                            <div class="font-semibold text-gray-900 dark:text-white">Nina K.</div>
+                            <div class="text-sm text-gray-500">Class of 2024</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Navigation Dots -->
+                <div class="flex justify-center mt-8 space-x-2">
+                    <button aria-label="Show first group of testimonials" class="testimonial-dot w-3 h-3 rounded-full bg-gray-300 dark:bg-gray-600" data-index="0"></button>
+                    <button aria-label="Show second group of testimonials" class="testimonial-dot w-3 h-3 rounded-full bg-gray-300 dark:bg-gray-600" data-index="1"></button>
+                    <button aria-label="Show third group of testimonials" class="testimonial-dot w-3 h-3 rounded-full bg-gray-300 dark:bg-gray-600" data-index="2"></button>
+                </div>
+
+                <!-- Manual navigation arrows -->
+                <button onclick="navigateTestimonial('prev')" class="absolute -left-20 top-1/2 -translate-y-1/2 bg-white hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700 p-4 rounded-full shadow-lg transition-transform duration-300 hover:scale-110" aria-label="Previous testimonials">
+                    <span class="material-symbols-outlined text-3xl text-gray-600 dark:text-gray-300">chevron_left</span>
+                </button>
+                <button onclick="navigateTestimonial('next')" class="absolute -right-20 top-1/2 -translate-y-1/2 bg-white hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700 p-4 rounded-full shadow-lg transition-transform duration-300 hover:scale-110" aria-label="Next testimonials">
+                    <span class="material-symbols-outlined text-3xl text-gray-600 dark:text-gray-300">chevron_right</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-24 bg-gray-50 dark:bg-gray-800">
+        <div class="container mx-auto px-6">
+            <div class="max-w-4xl mx-auto text-center">
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6">Ready to Excel in Your IB Journey?</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 mb-8">Join thousands of IB students who are already using our resources to achieve their academic goals.</p>
+                <div class="flex flex-col sm:flex-row justify-center gap-4">
+                    <a href="/" class="bg-green-600 hover:bg-green-700 text-white font-semibold py-4 px-8 rounded-full transition duration-300 transform hover:scale-105">
+                        Start Learning Now
+                    </a>
+                    <a href="/guide" class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-4 px-8 rounded-full border border-gray-300 transition duration-300 transform hover:scale-105 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-white dark:border-gray-600">
+                        View Study Guide
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-20 bg-white dark:bg-gray-900">
+        <div class="container mx-auto px-6 py-16">
+    <div class="bg-white dark:bg-gray-900 rounded-3xl shadow-xl p-10 md:p-16 transition-all duration-300 hover:shadow-2xl hover:transform hover:scale-[1.02]">
+            <div class="text-center mb-10">
+                <h2 class="text-4xl md:text-5xl font-extrabold text-gray-900 dark:text-white mb-6 tracking-tight">
+                    A Word From Us
+                </h2>
+                <div class="border-t-4 border-green-300 w-20 mx-auto mb-6"></div>
+                <p class="text-lg md:text-xl text-gray-700 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
+                    Finding free study resources with study guides, notes, and practice questions can be challenging, especially for the IB.
+                    That is why we created IVYstudy to help IB students achieve their goals and succeed academically without the stress of searching through unreliable or expensive sources.
+                    <br><br>
+                    This program originally began as the first stage of our IB CAS project. It brought together nine full IB students that wanted to make studying more accessible and less overwhelming.
+                    <br><br>
+                    With firsthand experience navigating the courses of the diploma, each member has contributed their insights and strengths, forming subject-specific teams to build a student-friendly platform.
+                    <br><br>
+                    Each course section on this website is crafted by students who have personally studied the content and are deemed to be near-experts in what the course requirements contain.
+                    <br><br>
+                    What started as a CAS initiative in our junior year quickly evolved, and through dedication and collaboration, we transformed it into an official website, complete with comprehensive coding, interactive features, and a growing study collection of free, quality study tools to support future IB students on their journey — all done by students.
+                    <br><br>
+                    We truly hope that you find this website useful and that it makes the IB feel a little less impossible!
+                </p>
+            </div>
+        </div>
+    </div>
+
+    </section>
+    
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-200 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+
+                <div class="text-center mt">
+                    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="text-gray-500 hover:text-gray-700">IVYSTUDY Content © 2025 is licensed under CC BY-NC-SA 4.0</a>
+                </div>
+
+                <div class="flex space-x-4">
+                    <a href="#terms" class="text-gray-500 hover:text-gray-700" title="View Terms of Service">Terms</a>
+                    <a href="#privacy" class="text-gray-500 hover:text-gray-700" title="View Privacy Policy">Privacy</a>
+                    <a href="#contact" class="text-gray-500 hover:text-gray-700" title="Contact Us">Contact</a>
+                    <a href="https://github.com/NagusameCS/IVY/tree/main" target="_blank" rel="noopener noreferrer"
+                        class="flex items-center gap-1 text-gray-500 hover:text-gray-700">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path fill-rule="evenodd" clip-rule="evenodd"
+                            d="M12 0C5.37 0 0 5.373 0 12c0 5.303 
+                            3.438 9.8 8.205 11.387.6.113.82-.258.82-.577
+                            0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61
+                            -.546-1.387-1.333-1.757-1.333-1.757-1.09-.745.083-.729.083-.729
+                            1.205.084 1.84 1.236 1.84 1.236 1.07 1.835 2.807 1.305 3.492.998
+                            .108-.775.418-1.305.76-1.605-2.665-.3-5.466-1.335-5.466-5.933
+                            0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176
+                            0 0 1.005-.322 3.3 1.23a11.52 11.52 0 013.003-.403
+                            c1.02.005 2.045.137 3.003.403 2.28-1.552 3.285-1.23
+                            3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91
+                            1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.21
+                            0 1.595-.015 2.88-.015 3.27 0 .315.21.69.825.57C20.565 
+                            21.795 24 17.295 24 12c0-6.627-5.373-12-12-12z" />
+                        </svg>GitHub
+                        
+                    </a>
+
+                    <a href="/info" id="viewer-count" class="group flex items-center gap-1 text-gray-500 hover:text-gray-700 transition-colors duration-200" data-tooltip="Total views since launch">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                            stroke-width="1.5" stroke="currentColor" class="w-5 h-5 transition-transform duration-300 group-hover:scale-110">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"/>
+                        </svg>
+                        <span id="viewer-count-text" class="text-gray-500 group-hover:text-gray-700 transition-colors duration-200">
+                            <span class="loading-dots">Loading</span>
+                        </span>
+                    </a>
+
+
+                    
+                    <script>
+                    function formatCount(n) {
+                        if (n < 1000) return n.toString();
+                        if (n < 10000) return (n / 1000).toFixed(1).replace(/\.0$/, '') + 'k';
+                        if (n < 1_000_000) return Math.floor(n / 1000) + 'k';
+                        return (n / 1_000_000).toFixed(1).replace(/\.0$/, '') + 'M';
+                    }
+
+                    // Enhanced view count animation
+                    function animateValue(element, start, end, duration = 2000) {
+                        if (start === end) return;
+                        const range = end - start;
+                        const increment = Math.ceil(range / 100); // Smoother animation
+                        let current = start;
+                        const timer = setInterval(() => {
+                            current = Math.min(current + increment, end);
+                            element.textContent = formatCount(current);
+                            if (current === end) {
+                                clearInterval(timer);
+                                element.classList.add('text-green-500', 'dark:text-green-400');
+                                element.parentElement.classList.add('scale-110');
+                                setTimeout(() => {
+                                    element.classList.remove('text-green-500', 'dark:text-green-400');
+                                    element.parentElement.classList.remove('scale-110');
+                                }, 1000);
+                            }
+                        }, duration / 100);
+                    }
+
+                    // Monthly views calculation
+                    fetch('/api/v.txt')
+                        .then(res => res.text())
+                        .then(txt => {
+                            const lines = txt.trim().split('\n');
+                            const last30Days = lines.slice(-30);
+                            const monthlyViews = last30Days.reduce((sum, line) => {
+                                const [_, views] = line.split(',');
+                                return sum + parseInt(views, 10);
+                            }, 0);
+                            const monthlyViewsElement = document.getElementById('monthly-views');
+                            animateValue(monthlyViewsElement, 0, monthlyViews);
+                        })
+                        .catch(() => {
+                            document.getElementById('monthly-views').textContent = 'many';
+                        });
+
+                    // Add loading animation
+                    const loadingElement = document.querySelector('.loading-dots');
+                    let dots = 0;
+                    const loadingInterval = setInterval(() => {
+                        loadingElement.textContent = 'Loading' + '.'.repeat(dots);
+                        dots = (dots + 1) % 4;
+                    }, 500);
+
+                    fetch('/api/')
+                        .then(res => res.text())
+                        .then(text => {
+                            clearInterval(loadingInterval);
+                            const count = parseInt(text, 10);
+                            const element = document.getElementById('viewer-count-text');
+                            animateValue(element, 0, count);
+                        })
+                        .catch(() => {
+                            clearInterval(loadingInterval);
+                            document.getElementById('viewer-count-text').textContent = '–';
+                        });
+                    </script>
+
+
+
+
+
+
+
+
+
+                </div>
+            </div>
+
+        </div>
+    </footer>
+
+    <script>
+        // Loading screen handling
+        document.addEventListener('DOMContentLoaded', () => {
+            // Hide loading screen after content is loaded
+            setTimeout(() => {
+                document.querySelector('.loading-screen').classList.add('fade-out');
+            }, 500);
+        });
+
+        // Smooth scroll handling
+        document.addEventListener('scroll', () => {
+            const scrollProgress = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
+            
+            // Parallax effect for background images
+            const backgroundImages = document.querySelectorAll('.background-image');
+            backgroundImages.forEach(img => {
+                img.style.transform = `translateY(${scrollProgress * 50}px)`;
+            });
+
+            // Fade in elements as they come into view
+            const fadeElements = document.querySelectorAll('.feature-card, .statistics-section, .testimonial');
+            fadeElements.forEach(el => {
+                const rect = el.getBoundingClientRect();
+                const isInView = rect.top <= window.innerHeight * 0.75;
+                if (isInView) {
+                    el.classList.add('fade-in');
+                }
+            });
+        });
+
+
+
+        // Background Carousel
+        const backgroundImages = document.querySelectorAll('.background-image');
+        let currentBackgroundIndex = 0;
+        
+        function rotateBackground() {
+            // Hide current background
+            backgroundImages[currentBackgroundIndex].classList.remove('active');
+            
+            // Move to next background
+            currentBackgroundIndex = (currentBackgroundIndex + 1) % backgroundImages.length;
+            
+            // Show new background
+            backgroundImages[currentBackgroundIndex].classList.add('active');
+        }
+        
+        // Text Carousel with Placeholder Text
+        const titles = [
+          "Rise Above",
+          "Legacy Library",
+          "Futuremakers",
+          "Conquer the IB"
+        ];
+                
+        const subtitles = [
+          "Unleash your potential with tools designed to elevate every step of your journey.",
+          "Explore a curated archive of real student IAs and EEs—learn from the best.",
+          "Join the wave of changemakers building tomorrow, powered by free world-class content.",
+          "Navigate every challenge with open-access resources built to help you excel."
+        ];
+        
+        const titleElement = document.getElementById('dynamic-title');
+        const subtitleElement = document.getElementById('dynamic-subtitle');
+        let currentTextIndex = 0;
+        
+        // Set initial placeholder text
+        titleElement.textContent = titles[0];
+        subtitleElement.textContent = subtitles[0];
+        
+        function rotateText() {
+            currentTextIndex = (currentTextIndex + 1) % titles.length;
+            
+            // Fade out
+            titleElement.style.opacity = 0;
+            subtitleElement.style.opacity = 0;
+            
+            // Change text after fade out
+            setTimeout(() => {
+                titleElement.textContent = titles[currentTextIndex];
+                subtitleElement.textContent = subtitles[currentTextIndex];
+                
+                // Fade in
+                titleElement.style.opacity = 1;
+                subtitleElement.style.opacity = 1;
+            }, 500);
+        }
+        
+        // Start carousels with staggered timing
+        setTimeout(() => {
+            rotateBackground();
+            rotateText();
+            
+            // Set intervals
+            setInterval(rotateBackground, 7000);
+            setInterval(rotateText, 7000);
+        }, 700);
+        
+        // Menu Toggle
+        const menuButton = document.getElementById('menuButton');
+        const sidebar = document.getElementById('sidebar');
+        
+        function toggleMenu() {
+            menuButton.classList.toggle('active');
+            sidebar.classList.toggle('active');
+        }
+        
+        menuButton.addEventListener('click', toggleMenu);
+        
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!menuButton.contains(e.target) && !sidebar.contains(e.target) && sidebar.classList.contains('active')) {
+                toggleMenu();
+            }
+        });
+        
+        // Initialize theme manager if not already done by onload
+        if (!document.body.classList.contains('dark-mode') && !document.body.classList.contains('light-mode')) {
+            ThemeManager.initialize();
+        }
+        
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Testimonials Carousel
+        let currentTestimonialIndex = 0;
+        const testimonialCarousel = document.querySelector('.testimonial-carousel');
+        const testimonialDots = document.querySelectorAll('.testimonial-dot');
+        
+        function updateTestimonialCarousel(index) {
+            testimonialCarousel.style.transform = `translateX(-${index * 100}%)`;
+            testimonialDots.forEach((dot, i) => {
+                if (i === index) {
+                    dot.classList.add('bg-green-500', 'dark:bg-green-400');
+                    dot.classList.remove('bg-gray-300', 'dark:bg-gray-600');
+                } else {
+                    dot.classList.remove('bg-green-500', 'dark:bg-green-400');
+                    dot.classList.add('bg-gray-300', 'dark:bg-gray-600');
+                }
+            });
+        }
+
+        testimonialDots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                currentTestimonialIndex = index;
+                updateTestimonialCarousel(index);
+            });
+        });
+
+        // Manual navigation arrows
+        function navigateTestimonial(direction) {
+            const totalTestimonials = 3;
+            if (direction === 'prev') {
+                currentTestimonialIndex = (currentTestimonialIndex - 1 + totalTestimonials) % totalTestimonials;
+            } else {
+                currentTestimonialIndex = (currentTestimonialIndex + 1) % totalTestimonials;
+            }
+            updateTestimonialCarousel(currentTestimonialIndex);
+        }
+
+        // Auto-rotate testimonials
+        setInterval(() => {
+            currentTestimonialIndex = (currentTestimonialIndex + 1) % 3;
+            updateTestimonialCarousel(currentTestimonialIndex);
+        }, 8000);
+
+        // Partnership Form Functions
+        function openPartnershipForm() {
+            const modal = document.getElementById('partnershipModal');
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closePartnershipForm() {
+            const modal = document.getElementById('partnershipModal');
+            modal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        function submitPartnershipForm(event) {
+            event.preventDefault();
+            // Here you would typically send the form data to your server
+            alert('Thank you for your interest! We will get back to you soon.');
+            closePartnershipForm();
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('partnershipModal').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('partnershipModal')) {
+                closePartnershipForm();
+            }
+        });
+
+        // Dynamic View Count
+        function updateViewCount() {
+            fetch('/api/')
+                .then(res => res.text())
+                .then(count => {
+                    const totalViews = parseInt(count, 10);
+                    document.getElementById('viewer-count-text').textContent = formatViewCount(totalViews);
+                })
+                .catch(() => {
+                    document.getElementById('viewer-count-text').textContent = '–';
+                });
+
+            // Also update monthly views if the element exists
+            const monthlyViewsEl = document.getElementById('monthly-views');
+            if (monthlyViewsEl) {
+                fetch('/api/v.txt')
+                    .then(res => res.text())
+                    .then(txt => {
+                        const lines = txt.trim().split('\n');
+                        const last30Days = lines.slice(-30);
+                        const monthlyViews = last30Days.reduce((sum, line) => {
+                            const [_, views] = line.split(',');
+                            return sum + parseInt(views, 10);
+                        }, 0);
+                        monthlyViewsEl.textContent = formatViewCount(monthlyViews);
+                    })
+                    .catch(() => {
+                        monthlyViewsEl.textContent = 'many';
+                    });
+            }
+        }
+
+        function formatViewCount(n) {
+            if (n < 1000) return n.toString();
+            if (n < 10000) return (n / 1000).toFixed(1).replace(/\.0$/, '') + 'k';
+            if (n < 1000000) return Math.floor(n / 1000) + 'k';
+            return (n / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
+        }
+
+        // Update view count immediately and every 5 minutes
+        updateViewCount();
+        setInterval(updateViewCount, 300000);
+
+        // Smooth scroll to partnership section
+        function scrollToPartnership() {
+            const partnershipSection = document.querySelector('.partnership-banner');
+            const offset = 80; // Offset for fixed header if needed
+            const bodyRect = document.body.getBoundingClientRect().top;
+            const elementRect = partnershipSection.getBoundingClientRect().top;
+            const elementPosition = elementRect - bodyRect;
+            const offsetPosition = elementPosition - offset;
+
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: 'smooth'
+            });
+
+            // Add highlight effect
+            partnershipSection.classList.add('highlight-section');
+            setTimeout(() => {
+                partnershipSection.classList.remove('highlight-section');
+            }, 1500);
+        }
+
+        // Add subtle highlight animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes highlightSection {
+                0% { transform: scale(1); }
+                50% { transform: scale(1.01); }
+                100% { transform: scale(1); }
+            }
+            .highlight-section {
+                animation: highlightSection 1.5s ease-in-out;
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+    
+</body>
+</html>
